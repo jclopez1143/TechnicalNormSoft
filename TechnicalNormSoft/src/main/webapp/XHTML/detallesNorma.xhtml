@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<ui:define name="content">
+		<h:form id="form">
+			<p:growl id="messages" closable="true" />
+			<div class="page-content container">
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-10">
+						<div class="card-wrapper">
+							<div class="card">
+								<div class="content-wrap">
+									<h3>#{normaDetailsView.selectedNorma.nombre}</h3>
+									<div class="description-left">Norma Técnica</div>
+									<br></br>
+									<div class="division">
+										<hr></hr>
+									</div>
+									<h6>Requisitos de la Norma</h6>
+									<p:dataTable value="#{normaDetailsView.requisitoData}"
+										var="requisito" paginator="true" rows="8" scrollable="true"
+										scrollHeight="400">
+										<p:column sortBy="#{requisito.descripcion}"
+											filterBy="#{requisito.descripcion}">
+											<f:facet name="header">
+												<h:outputText value="Descripción" />
+											</f:facet>
+											<p:commandLink value="#{requisito.descripcion}"
+												actionListener="#{normaDetailsView.action_show_requisito_details}">
+												<f:attribute name="selectedRequisito" value="#{requisito}" />
+											</p:commandLink>
+										</p:column>
+
+										<p:column sortBy="#{requisito.numeral}"
+											filterBy="#{requisito.numeral}">
+											<f:facet name="header">
+												<h:outputText value="Numeral" />
+											</f:facet>
+											<h:outputText value="#{requisito.numeral}" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+						<br></br>
+						<h:commandLink value="Volver"
+							onclick="history.go(-1);return false;" immediate="true" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

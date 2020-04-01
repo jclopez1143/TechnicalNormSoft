@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 27, 2020 7:04:41 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="co.com.technicalnormsoft.model.RegistroDato" table="registro_dato" schema="public" optimistic-lock="version">
+        <id name="idRegistroDato" type="java.lang.Integer">
+            <column name="id_registro_dato" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="establecimientoObjetivo" class="co.com.technicalnormsoft.model.EstablecimientoObjetivo" fetch="select">
+            <column name="establecimiento_objetivo_id" />
+        </many-to-one>
+        <many-to-one name="datoObjetivo" class="co.com.technicalnormsoft.model.DatoObjetivo" fetch="select">
+            <column name="id_dato_objetivo" />
+        </many-to-one>
+        <property name="dateIn" type="java.util.Date">
+            <column name="date_in" length="29" />
+        </property>
+        <property name="dateUpdate" type="java.util.Date">
+            <column name="date_update" length="29" />
+        </property>
+        <set name="valorCampos" table="valor_campo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_registro_dato" />
+            </key>
+            <one-to-many class="co.com.technicalnormsoft.model.ValorCampo" />
+        </set>
+    </class>
+</hibernate-mapping>

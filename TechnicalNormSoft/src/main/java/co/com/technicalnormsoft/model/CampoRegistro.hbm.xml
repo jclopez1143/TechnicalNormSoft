@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 27, 2020 7:04:41 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="co.com.technicalnormsoft.model.CampoRegistro" table="campo_registro" schema="public" optimistic-lock="version">
+        <id name="idCampoRegistro" type="java.lang.Integer">
+            <column name="id_campo_registro" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="datoObjetivo" class="co.com.technicalnormsoft.model.DatoObjetivo" fetch="select">
+            <column name="id_dato_objetivo" />
+        </many-to-one>
+        <property name="nombre" type="java.lang.String">
+            <column name="nombre" length="256" />
+        </property>
+        <property name="tipo" type="java.lang.String">
+            <column name="tipo" length="128" />
+        </property>
+        <property name="magnitud" type="java.lang.String">
+            <column name="magnitud" length="128" />
+        </property>
+        <property name="prioridad" type="java.lang.Integer">
+            <column name="prioridad" />
+        </property>
+        <property name="dateIn" type="java.util.Date">
+            <column name="date_in" length="29" />
+        </property>
+        <property name="dateUpdate" type="java.util.Date">
+            <column name="date_update" length="29" />
+        </property>
+        <set name="valorCampos" table="valor_campo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_campo_registro" />
+            </key>
+            <one-to-many class="co.com.technicalnormsoft.model.ValorCampo" />
+        </set>
+    </class>
+</hibernate-mapping>

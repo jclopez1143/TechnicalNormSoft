@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 26, 2019 7:58:19 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="co.com.technicalnormsoft.model.Requisito" table="requisito" schema="public" optimistic-lock="version">
+        <id name="idRequisito" type="java.lang.Integer">
+            <column name="id_requisito" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="categoriaRequisito" class="co.com.technicalnormsoft.model.CategoriaRequisito" fetch="select">
+            <column name="id_categoria_requisito" />
+        </many-to-one>
+        <many-to-one name="norma" class="co.com.technicalnormsoft.model.Norma" fetch="select">
+            <column name="id_norma" />
+        </many-to-one>
+        <property name="descripcion" type="java.lang.String">
+            <column name="descripcion" />
+        </property>
+        <property name="numeral" type="java.lang.String">
+            <column name="numeral" length="12" />
+        </property>
+        <property name="dateIn" type="java.util.Date">
+            <column name="date_in" length="29" />
+        </property>
+        <property name="dateUpdate" type="java.util.Date">
+            <column name="date_update" length="29" />
+        </property>
+        <set name="objetivos" table="objetivo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_requisito" />
+            </key>
+            <one-to-many class="co.com.technicalnormsoft.model.Objetivo" />
+        </set>
+    </class>
+</hibernate-mapping>

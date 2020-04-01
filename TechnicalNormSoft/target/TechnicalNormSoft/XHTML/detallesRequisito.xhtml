@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<ui:define name="content">
+		<h:form id="form">
+			<p:growl id="messages" closable="true" />
+			<div class="page-content container">
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-10">
+						<div class="card-wrapper">
+							<div class="card">
+								<div class="content-wrap">
+									<h3>Requisito #
+										#{requisitoDetailsView.selectedRequisito.numeral}</h3>
+									<div class="description-left">Requisito</div>
+									<br></br>
+									<div class="division">
+										<hr></hr>
+									</div>
+									<p>#{requisitoDetailsView.selectedRequisito.descripcion}</p>
+									<h:panelGrid columns="2" cellpadding="15">
+										<p:outputLabel value="Norma Técnica: " />
+										<p:commandLink styleClass="description-label"
+											value="#{requisitoDetailsView.selectedNorma.nombre}"
+											action="#{requisitoDetailsView.action_show_norma_details()}">
+										</p:commandLink>
+									</h:panelGrid>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-w-header">Objetivo</div>
+								<div class="content-wrap">
+									<p:commandLink
+										action="#{requisitoDetailsView.action_show_objetivo_details()}">
+										<p>#{requisitoDetailsView.selectedObjetivo.descripcion}</p>
+									</p:commandLink>
+								</div>
+							</div>
+						</div>
+
+						<br></br>
+						<h:commandLink value="Volver"
+							onclick="history.go(-1);return false;" immediate="true" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ps="http://primefaces.org/sentinel"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<!-- 	<h:form id="menuform">
+		<p:menu toggleable="true">
+			<p:submenu label="Establecimiento" icon="fa fa-building">
+				<p:menuitem value="Mis Establecimientos" icon="fa fa-building-o"/>
+				<p:menuitem value="Crear Establecimiento" icon="fa fa-plus-square-o"/>
+			</p:submenu>
+			<p:submenu label="Proyecto" icon="fa fa-file-text">
+				<p:menuitem value="Mis Proyectos" icon="fa fa-file-text-o"/>
+				<p:menuitem value="Crear Proyecto" icon="fa fa-plus-square-o"/>
+			</p:submenu>
+		</p:menu>
+	</h:form> -->
+
+	<!-- 	<script type="text/javascript">
+		$(document).ready(function() {
+
+			$('#sidebarCollapse').on('click', function() {
+				$('#sidebar').toggleClass('active');
+			});
+
+		});
+	</script>
+	<div class="wrapper">
+		<nav id="sidebar">
+			<div class="sidebar-header">
+				<h3>Bootstrap Sidebar</h3>
+			</div>
+
+			<ul class="list-unstyled components">
+				<p>Dummy Heading</p>
+				<li class="active"><a href="#homeSubmenu"
+					data-toggle="collapse" aria-expanded="false"
+					class="dropdown-toggle">Home</a>
+					<ul class="collapse list-unstyled" id="homeSubmenu">
+						<li><a href="#">Home 1</a></li>
+						<li><a href="#">Home 2</a></li>
+						<li><a href="#">Home 3</a></li>
+					</ul></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#pageSubmenu" data-toggle="collapse"
+					aria-expanded="false" class="dropdown-toggle">Pages</a>
+					<ul class="collapse list-unstyled" id="pageSubmenu">
+						<li><a href="#">Page 1</a></li>
+						<li><a href="#">Page 2</a></li>
+						<li><a href="#">Page 3</a></li>
+					</ul></li>
+				<li><a href="#">Portfolio</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</nav>
+	</div> -->
+
+	<h:form id="menuform">
+
+		<p:menubar toggleable="true">
+
+			<p:submenu label="Menú" icon="fa fa-building">
+
+				<p:menuitem value="Listado de Establecimientos"
+					url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/listadoEstablecimiento.xhtml" />
+				</p:submenu>
+		</p:menubar>
+	</h:form>
+</ui:composition>

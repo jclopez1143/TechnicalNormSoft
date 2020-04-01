@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<ui:define name="content">
+		<h:form id="form">
+			<p:growl id="messages" closable="true" />
+			<div class="page-content container">
+				<div class="row">
+					<div class="col-md-offset-1 col-lg-10">
+						<div class="card-wrapper">
+							<div class="card">
+								<div class="content-wrap">
+									<h3>#{programaDetailsView.selectedPrograma.descripcion}</h3>
+									<div class="description-left">Programa</div>
+									<br></br>
+									<div class="division">
+										<hr></hr>
+									</div>
+									<div align="center">
+										<h4>Progreso del Programa</h4>
+										<p:progressBar value="#{programaDetailsView.progresoPrograma}"
+											labelTemplate="{value}%" displayOnly="true" />
+									</div>
+
+									<h:panelGrid columns="2" cellpadding="15">
+										<p:outputLabel value="Proyecto: " />
+										<p:commandLink styleClass="description-label"
+											value="#{programaDetailsView.selectedProyectoEstablecimiento.nombre}"
+											action="#{programaDetailsView.action_show_proyecto_details()}">
+										</p:commandLink>
+									</h:panelGrid>
+
+									<h6>Objetivos del Programa</h6>
+									<p:dataTable value="#{programaDetailsView.allObjetivos}"
+										var="objetivo" paginator="true" rows="8" scrollable="true"
+										scrollHeight="400">
+										<p:column sortBy="#{objetivo.descripcion}"
+											filterBy="#{objetivo.descripcion}">
+											<f:facet name="header">
+												<h:outputText value="Descripción" />
+											</f:facet>
+											<p:commandLink value="#{objetivo.descripcion}"
+												actionListener="#{programaDetailsView.action_show_objetivo_details}">
+												<f:attribute name="selectedObjetivo" value="#{objetivo}" />
+											</p:commandLink>
+										</p:column>
+
+										<p:column sortBy="#{objetivo.numeralRequisito}"
+											filterBy="#{objetivo.numeralRequisito}">
+											<f:facet name="header">
+												<h:outputText value="Numeral Requisito" />
+											</f:facet>
+											<h:outputText value="#{objetivo.numeralRequisito}" />
+										</p:column>
+
+										<p:column sortBy="#{objetivo.estadoDescripcion}"
+											filterBy="#{objetivo.estadoDescripcion}">
+											<f:facet name="header">
+												<h:outputText value="Estado" />
+											</f:facet>
+											<h:outputText value="#{objetivo.estadoDescripcion}" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="page-content container">
+				<div class="row">
+					<div class="col-md-offset-1 col-md-5">
+						<div class="card-wrapper">
+							<div class="card">
+								<div class="card-w-header">#{(programaDetailsView.estadoProyecto.descripcion ne 'Autoevaluación') ? 
+								'Objetivos Completados' : 'Requisitos No Cumplidos'}</div>
+								<div class="content-wrap">
+									<p:dataTable
+										value="#{programaDetailsView.objetivosEstadoB}"
+										var="objetivo" paginator="true" rows="5" scrollable="true"
+										scrollHeight="300">
+										<p:column sortBy="#{objetivo.descripcion}">
+											<f:facet name="header">
+												<h:outputText value="Descripción" />
+											</f:facet>
+											<p:commandLink value="#{objetivo.descripcion}"
+												actionListener="#{programaDetailsView.action_show_objetivo_details}">
+												<f:attribute name="selectedObjetivo" value="#{objetivo}" />
+											</p:commandLink>
+										</p:column>
+
+										<p:column sortBy="#{objetivo.numeralRequisito}">
+											<f:facet name="header">
+												<h:outputText value="Numeral Requisito" />
+											</f:facet>
+											<h:outputText value="#{objetivo.numeralRequisito}" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-5">
+
+						<div class="card-wrapper">
+							<div class="card">
+								<div class="card-w-header">#{(programaDetailsView.estadoProyecto.descripcion ne 'Autoevaluación') ?
+								 'Objetivos en Curso' : 'Requisitos Cumplidos'}</div>
+								<div class="content-wrap">
+									<p:dataTable value="#{programaDetailsView.objetivosEstadoA}"
+										var="objetivo" paginator="true" rows="5" scrollable="true"
+										scrollHeight="300">
+										<p:column sortBy="#{objetivo.descripcion}">
+											<f:facet name="header">
+												<h:outputText value="Descripción" />
+											</f:facet>
+											<p:commandLink value="#{objetivo.descripcion}"
+												actionListener="#{programaDetailsView.action_show_objetivo_details}">
+												<f:attribute name="selectedObjetivo" value="#{objetivo}" />
+											</p:commandLink>
+										</p:column>
+
+										<p:column sortBy="#{objetivo.numeralRequisito}">
+											<f:facet name="header">
+												<h:outputText value="Numeral Requisito" />
+											</f:facet>
+											<h:outputText value="#{objetivo.numeralRequisito}" />
+										</p:column>
+									</p:dataTable>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="page-content container">
+				<div class="row">
+					<div class="col-md-offset-1 col-md-5">
+						<h:commandLink value="Volver"
+							onclick="history.go(-1);return false;" immediate="true" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

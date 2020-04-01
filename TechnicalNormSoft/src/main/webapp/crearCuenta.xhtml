@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	</f:facet>
+	<title>Crea tu Cuenta</title>
+	<link
+		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/bootstrap/css/bootstrap.min.css"
+		rel="stylesheet" />
+	<link
+		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/css/styles.css"
+		rel="stylesheet" />
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script
+		src="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
+	<script
+		src="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/js/custom.js"></script>
+
+</h:head>
+<h:body>
+	<h:form id="form">
+		<p:messages id="messages" closable="true" />
+		<div class="page-content container">
+			<div class="row">
+				<div class="col-md-offset-3 col-lg-6">
+					<p:panel id="userData">
+						<h4 style="font-weight: bold;">Crea Tu Cuenta</h4>
+						<p:separator />
+						<h:panelGrid columns="2" cellpadding="4" width="100%">
+							<p:outputLabel value="Razón Social: * " />
+							<p:inputText id="txtRazonSocial" required="true"
+								binding="#{crearUsuarioView.txtRazonSocial}"
+								requiredMessage="Debe ingresar una Razón Social" />
+
+							<p:outputLabel value="NIT: * " />
+							<p:inputMask id="txtNit" required="true"
+								binding="#{crearUsuarioView.txtNit}" mask="999.999.999-9"
+								requiredMessage="Debe ingresar un NIT" />
+
+							<p:outputLabel value="Nombre Persona Contacto: * " />
+							<p:inputText id="txtNombrePersonaContacto" required="true"
+								binding="#{crearUsuarioView.txtNombrePersonaContacto}"
+								requiredMessage="Debe ingresar el Nombre de Persona de Contacto" />
+
+							<p:outputLabel value="Cargo Persona Contacto: * " />
+							<p:inputText id="txtCargoPersonaContacto" required="true"
+								binding="#{crearUsuarioView.txtCargoPersonaContacto}"
+								requiredMessage="Debe ingresar el Cargo de Persona de Contacto" />
+
+							<p:outputLabel value="Teléfono: " />
+							<p:inputText id="txtTelefono"
+								binding="#{crearUsuarioView.txtTelefono}" required="false" />
+
+							<p:outputLabel value="Celular: " />
+							<p:inputText id="txtCelular"
+								binding="#{crearUsuarioView.txtCelular}" required="false" />
+
+							<p:outputLabel value="Sitio Web: " />
+							<p:inputText id="txtSitioWeb"
+								binding="#{crearUsuarioView.txtSitioWeb}" required="false" />
+
+							<p:outputLabel value="e-Mail: * " />
+							<p:inputText id="txtEmail" required="true"
+								requiredMessage="Debe ingresar un e-Mail"
+								validatorMessage="Debe ingresar un e-Mail válido"
+								binding="#{crearUsuarioView.txtEmail}">
+								<f:validateRegex
+									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+							</p:inputText>
+
+							<p:outputLabel value="Contraseña: * " />
+							<p:password id="txtPassword" feedback="true" required="true"
+								requiredMessage="Debe ingresar una contraseña"
+								binding="#{crearUsuarioView.txtPassword}"
+								match="txtConfirmPassword"
+								promptLabel="Por favor ingrese contraseña" weakLabel="Débil"
+								goodLabel="Buena" strongLabel="Fuerte" />
+
+							<p:outputLabel value="Confirmar Contraseña: * " />
+							<p:password id="txtConfirmPassword" feedback="true"
+								required="true"
+								requiredMessage="Debe ingresar la confirmación de contraseña"
+								promptLabel="Por favor ingrese contraseña" weakLabel="Débil"
+								goodLabel="Buena" strongLabel="Fuerte" />
+						</h:panelGrid>
+						
+						<br></br>
+						<p:panel header="Términos y Condiciones" toggleable="true"
+							toggleSpeed="500" closeSpeed="500" widgetVar="panel"
+							style="margin-bottom:20px" collapsed="false">
+
+							<p:scrollPanel mode="native" style="width:auto;height:150px">
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+									Maecenas et nulla dignissim erat blandit malesuada. Sed
+									venenatis ex elit, vitae dapibus metus tincidunt et. Aenean in
+									placerat tellus. Morbi at lobortis ligula. Vivamus et pharetra
+									orci, nec pretium quam. Quisque pretium molestie nulla vel
+									mattis. Maecenas ultricies consequat lacus et luctus. Duis
+									volutpat quam non dignissim hendrerit. Sed lacus mi, posuere
+									euismod tincidunt sit amet, vestibulum venenatis diam. Etiam
+									egestas urna vel sem vulputate consequat quis fermentum diam.
+									Duis imperdiet neque vel blandit ullamcorper.</p>
+							</p:scrollPanel>
+						</p:panel>
+						
+						<h:panelGrid columns="2">
+							<p:selectBooleanCheckbox id="TyC"
+								value="#{crearUsuarioView.termAgree}" />
+							<h:outputText value="He leído y acepto térmionos y condiciones." />
+						</h:panelGrid>
+						<br></br>
+						<div style="text-align: center;">
+							<p:commandButton styleClass="btn btn-primary"
+								value="Registrar"
+								actionListener="#{crearUsuarioView.action_create()}"
+								update="form" validateClient="true" />
+						</div>
+					</p:panel>
+				</div>
+			</div>
+		</div>
+	</h:form>
+</h:body>
+</html>

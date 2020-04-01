@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 27, 2020 7:04:41 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="co.com.technicalnormsoft.model.EstablecimientoObjetivo" table="establecimiento_objetivo" schema="public" optimistic-lock="version">
+        <id name="establecimientoObjetivoId" type="java.lang.Integer">
+            <column name="establecimiento_objetivo_id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="objetivo" class="co.com.technicalnormsoft.model.Objetivo" fetch="select">
+            <column name="id_objetivo" />
+        </many-to-one>
+        <many-to-one name="estadoObjetivo" class="co.com.technicalnormsoft.model.EstadoObjetivo" fetch="select">
+            <column name="id_estado" />
+        </many-to-one>
+        <many-to-one name="proyectoEstablecimiento" class="co.com.technicalnormsoft.model.ProyectoEstablecimiento" fetch="select">
+            <column name="id_proyecto_establecimiento" />
+        </many-to-one>
+        <property name="resolucion" type="java.lang.String">
+            <column name="resolucion" />
+        </property>
+        <property name="dateFin" type="java.util.Date">
+            <column name="date_fin" length="29" />
+        </property>
+        <property name="dateIn" type="java.util.Date">
+            <column name="date_in" length="29" />
+        </property>
+        <property name="dateUpdate" type="java.util.Date">
+            <column name="date_update" length="29" />
+        </property>
+        <set name="registroDatos" table="registro_dato" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="establecimiento_objetivo_id" />
+            </key>
+            <one-to-many class="co.com.technicalnormsoft.model.RegistroDato" />
+        </set>
+        <set name="valorDatos" table="valor_dato" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="establecimiento_objetivo_id" />
+            </key>
+            <one-to-many class="co.com.technicalnormsoft.model.ValorDato" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.password">123456</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/technical_norm_soft</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <mapping resource="co/com/technicalnormsoft/model/EstablecimientoObjetivo.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/Norma.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/EstadoProyecto.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/DatoObjetivo.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/RegistroDato.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/CategoriaRequisito.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/EstadoObjetivo.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/Programa.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/Proyecto.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/Usuario.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/ProyectoEstablecimiento.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/Requisito.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/ValorCampo.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/TipoServicio.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/CampoRegistro.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/Medalla.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/Objetivo.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/TipoServicioNorma.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/CategoriaPrograma.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/Establecimiento.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/ValorDato.hbm.xml" />
+        <mapping resource="co/com/technicalnormsoft/model/MedallaEstablecimiento.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

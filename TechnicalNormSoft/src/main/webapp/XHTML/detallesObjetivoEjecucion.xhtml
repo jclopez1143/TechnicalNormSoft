@@ -1,0 +1,255 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+	
+	<!-- TODO:
+	- save ValorDatos
+	- manage buttons to save ValorDatos and finish Objetivo
+	- Order dialogRegistro field's width
+	 -->
+
+	<ui:define name="content">
+		<h:form id="form">
+			<p:growl id="messages" closable="true" />
+			<div class="page-content container">
+				<div class="row">
+					<div class="col-md-offset-2 col-lg-8">
+						<div class="card-wrapper">
+							<div class="card">
+								<div class="content-wrap">
+									<h3>Obj. #{objetivoEjecucionDetailsView.numeralProyecto} :
+										Requisito # #{objetivoEjecucionDetailsView.requisito.numeral}</h3>
+									<div class="description-left">Objetivo</div>
+									<div class="description-right">Estado:
+										#{objetivoEjecucionDetailsView.txtEstado}</div>
+									<br></br>
+									<div class="division">
+										<hr></hr>
+									</div>
+									<p>#{objetivoEjecucionDetailsView.selectedObjetivo.descripcion}</p>
+									<h:panelGrid columns="2" cellpadding="15">
+										<p:outputLabel value="Requisito: " />
+										<p:commandLink styleClass="description-label"
+											value="#{objetivoEjecucionDetailsView.requisito.numeral}"
+											action="#{objetivoEjecucionDetailsView.action_show_requisito_details()}"
+											immediate="true"/>
+									</h:panelGrid>
+									<br></br>
+
+									<ui:repeat var="dato"
+										value="#{objetivoEjecucionDetailsView.datosObjetivo}">
+
+										<h:panelGrid columns="2" cellpadding="4" width="100%"
+											rendered="#{empty dato.campoRegistros}">
+											
+											<p:outputLabel value="#{dato.nombre}: " />
+											
+											<p:calendar value="#{dato.valorDatos[dato.nombre]}"
+												style="width: 80%;" required="true" pattern="yyyy-MM-dd"
+												requiredMessage="#{dato.nombre} no puede estar vacío"
+												rendered="#{dato.tipo == 'date'}" />
+
+											<p:inputTextarea value="#{dato.valorDatos[dato.nombre]}"
+												autoResize="false" rows="6" cols="38" required="true"
+												requiredMessage="#{dato.nombre} no puede estar vacío"
+												rendered="#{dato.tipo == 'text'}" />
+
+											<p:selectBooleanCheckbox value="#{(dato.valorDatos[dato.nombre] eq 'true') ? true
+												: false}"
+												style="width: 80%;" required="true"
+												requiredMessage="#{dato.nombre} no puede estar vacío"
+												rendered="#{dato.tipo == 'boolean'}" />
+
+											<p:inputNumber decimalPlaces="0"
+												value="#{dato.valorDatos[dato.nombre]}" style="width: 80%;"
+												required="true"
+												requiredMessage="#{dato.nombre} no puede estar vacío"
+												rendered="#{dato.tipo == 'integer'}" />
+
+											<p:inputNumber decimalPlaces="2"
+												value="#{dato.valorDatos[dato.nombre]}" style="width: 80%;"
+												required="true"
+												requiredMessage="#{dato.nombre} no puede estar vacío"
+												rendered="#{dato.tipo == 'double'}" />
+
+											<p:inputText value="#{dato.valorDatos[dato.nombre]}"
+												style="width: 80%;" required="true"
+												requiredMessage="#{dato.nombre} no puede estar vacío"
+												rendered="#{dato.tipo == 'string'}" />
+
+										</h:panelGrid>
+
+										<h6 style="display: #{empty dato.campoRegistros ? 'none;' : 'block;'}">#{dato.nombre}</h6>
+										<p:dataTable value="#{dato.registroDatos}" var="registroDato"
+											paginator="true" rows="6" scrollable="true"
+											scrollHeight="200" rendered="#{!empty dato.campoRegistros}">
+
+											<p:columns value="#{dato.campoRegistros}" var="campo"
+												columnIndexVar="colIndex"
+												sortBy="#{registroDato.valorCampos[campo.nombre].valor}"
+												filterBy="#{registroDato.valorCampos[campo.nombre].valor}">
+
+												<f:facet name="header">
+													<h:outputText value="#{campo.nombre}" />
+												</f:facet>
+												<h:outputText
+													value="#{registroDato.valorCampos[campo.nombre].valor}" />
+											</p:columns>
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="Opciones" />
+												</f:facet>
+												<p:commandButton id="btnEdit" icon="fa fa-fw fa-edit" title="Editar"
+													update=":dialogRegistro" immediate="true" styleClass="datatable-button"
+													actionListener="#{objetivoEjecucionDetailsView.set_update_registro_dato}">
+													<f:attribute name="registroDato" value="#{registroDato}" />
+													<f:attribute name="datoObjetivo" value="#{dato}" />
+												</p:commandButton>
+												<p:commandButton id="btnDelete" title="Eliminar" styleClass="datatable-button"
+													actionListener="#{objetivoEjecucionDetailsView.action_delete_datatable}"
+													onclick="if(!confirm('Está seguro que desea eliminar éste registro?')){return false;}"
+													icon="fa fa-fw fa-trash" update="@form" immediate="true">
+													<f:attribute name="registroDato" value="#{registroDato}" />
+												</p:commandButton>
+											</p:column>
+										</p:dataTable>
+										<br></br>
+										<div align="right" style="display: #{empty dato.campoRegistros ? 'none;' : 'block;'}">
+											<p:commandButton styleClass="btn btn-primary" value="Agregar"
+												actionListener="#{objetivoEjecucionDetailsView.set_new_registro_dato}"
+												update=":dialogRegistro" immediate="true" icon="fa fa-plus" iconPos="right">
+												<f:attribute name="datoObjetivo" value="#{dato}" />
+											</p:commandButton>
+											<div class="division">
+												<hr></hr>
+											</div>
+										</div>
+									</ui:repeat>
+									<br></br>
+									<div align="center">
+										<p:commandButton styleClass="btn btn-primary"
+											value="Finalizar"
+											action="#{objetivoEjecucionDetailsView.action_resolve_objetivo()}"
+											update=":dialogResolucion :form" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<br></br>
+						<h:commandLink value="Volver"
+							onclick="history.go(-1);return false;" immediate="true" />
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+		<p:dialog id="dialogRegistro" appendTo="@(body)" draggable="true"
+			closable="false" showEffect="blind" hideEffect="blind"
+			resizable="false" modal="true" width="500"
+			header="#{objetivoEjecucionDetailsView.selectedDatoObjetivo.nombre}">
+			<h:form id="formRegDialog">
+				<p:messages id="msgReg" />
+				
+				<ui:repeat var="campo"
+					value="#{objetivoEjecucionDetailsView.selectedDatoObjetivo.campoRegistros}">
+					
+					<h:panelGrid columns="2" id="panelGridRegistro" cellpadding="4"
+						width="100%" >
+
+						<h:outputText value="#{campo.nombre}: " />
+
+						<p:calendar
+							value="#{objetivoEjecucionDetailsView.registroMap[campo.nombre]}"
+							required="true" pattern="yyyy-MM-dd" inputStyle="width: 100%; align: left;"
+							requiredMessage="#{campo.nombre} no puede estar vacío"
+							rendered="#{campo.tipo == 'date'}" />
+
+						<p:inputTextarea
+							value="#{objetivoEjecucionDetailsView.registroMap[campo.nombre]}"
+							autoResize="false" rows="6" style="width: 100%;" required="true"
+							requiredMessage="#{campo.nombre} no puede estar vacío"
+							rendered="#{campo.tipo == 'text'}" />
+
+						<p:selectBooleanCheckbox
+							value="#{objetivoEjecucionDetailsView.registroMap[campo.nombre]}"
+							required="true" style="align: left;"
+							requiredMessage="#{campo.nombre} no puede estar vacío"
+							rendered="#{campo.tipo == 'boolean'}" />
+
+						<p:inputNumber decimalPlaces="0"
+							value="#{objetivoEjecucionDetailsView.registroMap[campo.nombre]}"
+							required="true" inputStyle="width: 100%;"
+							requiredMessage="#{campo.nombre} no puede estar vacío"
+							rendered="#{campo.tipo == 'integer'}" />
+
+						<p:inputNumber decimalPlaces="2"
+							value="#{objetivoEjecucionDetailsView.registroMap[campo.nombre]}"
+							required="true" inputStyle="width: 100%;"
+							requiredMessage="#{campo.nombre} no puede estar vacío"
+							rendered="#{campo.tipo == 'double'}" />
+
+						<p:inputText
+							value="#{objetivoEjecucionDetailsView.registroMap[campo.nombre]}"
+							required="true" style="width: 100%;"
+							requiredMessage="#{campo.nombre} no puede estar vacío"
+							rendered="#{campo.tipo == 'string'}" />
+
+						<p:selectOneMenu
+							value="#{objetivoEjecucionDetailsView.registroMap[campo.nombre]}"
+							required="true" style="width: 100%;"
+							requiredMessage="#{campo.nombre} no puede estar vacío"
+							rendered="#{campo.tipo == 'multiple'}">
+							<f:selectItem itemLabel="Seleccione..." itemValue="" />
+							<f:selectItems value="#{fn:split(campo.magnitud, ',')}" />
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+				</ui:repeat>
+				<br></br>
+				<br></br>
+				<div align="center">
+					<p:commandButton styleClass="btn btn-primary" value="Guardar"
+						action="#{objetivoEjecucionDetailsView.action_save_registro()}"
+						update=":dialogRegistro :form">
+					</p:commandButton>
+					<p:commandButton styleClass="btn btn-danger" value="Salir"
+						action="#{objetivoEjecucionDetailsView.action_closeDialog()}"
+						update=":dialogRegistro" immediate="true" />
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="dialogResolucion" appendTo="@(body)" draggable="true"
+			closable="false" showEffect="blind" hideEffect="blind"
+			resizable="false" modal="true" width="550" header="Resolver Objetivo">
+			<h:form id="formResolDialog">
+				<p:messages id="msgResol" />
+				<p>Para resolver el objetivo, debe describir de manera breve las
+					actividades que se llevaron a cabo para cumplir con el requisito.</p>
+
+				<h5 style="font-weight: bold;">Resolución:</h5>
+				<p:inputTextarea id="txtResolucion" required="true"
+					requiredMessage="Debe ingresar la resolución del objetivo"
+					autoResize="false" rows="6" style="width: 100%;" />
+				<br></br>
+				<br></br>
+				<div align="center">
+					<p:commandButton styleClass="btn btn-primary" value="Guardar"
+						action="#{objetivoEjecucionDetailsView.action_finish_objetivo()}"
+						update=":dialogResolucion :form">
+					</p:commandButton>
+					<p:commandButton styleClass="btn btn-danger" value="Salir"
+						action="#{objetivoEjecucionDetailsView.action_closeDialog()}"
+						update=":dialogResolucion" immediate="true" />
+				</div>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
