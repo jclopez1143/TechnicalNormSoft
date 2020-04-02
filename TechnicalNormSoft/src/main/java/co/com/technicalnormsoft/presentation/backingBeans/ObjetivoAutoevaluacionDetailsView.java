@@ -138,13 +138,13 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 					btnSave.setDisabled(true);
 				}
 
-			} else if (!txtObjetivoResolucion.equals("")) {
+			} else if (!txtObjetivoResolucion.trim().equals("")) {
 				btnSave.setDisabled(false);
 			} else {
 				btnSave.setDisabled(true);
 			}
 		} else {
-			if (txtObjetivoResolucion.equals("")) {
+			if (txtObjetivoResolucion.trim().equals("")) {
 				btnSave.setDisabled(true);
 			} else {
 				btnSave.setDisabled(false);

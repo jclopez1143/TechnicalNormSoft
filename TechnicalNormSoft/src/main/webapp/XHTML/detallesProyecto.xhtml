@@ -6,8 +6,8 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	<ui:define name="content">
 		<h:form id="form">
-			<p:growl id="messages" closable="true" />
 			<div class="page-content container">
+				<p:growl id="messages" closable="true" />
 				<div class="row">
 					<div class="col-md-offset-1 col-lg-10">
 						<div class="card-wrapper">
@@ -61,9 +61,7 @@
 
 					</div>
 				</div>
-			</div>
 
-			<div class="page-content container">
 				<div class="row">
 					<div class="col-md-offset-1 col-md-5">
 						<div class="card-wrapper">
@@ -109,8 +107,7 @@
 					<div class="col-md-5">
 						<div class="card-wrapper">
 							<div class="card"
-								style="min-height: 385px; display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Ejecución') 
-									? 'block': 'none'}">
+								style="min-height: 385px; display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Ejecución')? 'block': 'none'}">
 								<div class="card-w-header">Objetivos en Curso</div>
 								<div class="content-wrap">
 									<p:dataTable value="#{proyectoDetailsView.objetivosEnCurso}"
@@ -136,13 +133,13 @@
 							</div>
 
 							<div class="card"
-								style="min-height: 385px; display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Autoevaluación')
-									? 'block': 'none'}">
+								style="min-height: 385px; display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Autoevaluación')? 'block': 'none'}">
 								<div class="card-w-header">Requisitos Cumplidos</div>
 								<div class="content-wrap">
 									<p:dataTable
 										value="#{proyectoDetailsView.requisitoCompletados}"
-										var="requisito" paginator="true" rows="5" scrollable="true">
+										var="requisito" paginator="true" rows="5" scrollable="true"
+										scrollHeight="225">
 										<p:column sortBy="#{requisito.descripcion}">
 											<f:facet name="header">
 												<h:outputText value="Descripción" />
@@ -165,8 +162,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="page-content container">
 				<div class="row">
 					<div class="col-md-offset-1 col-md-5">
 						<p:commandButton styleClass="btn btn-warning"
@@ -174,13 +169,12 @@
 							value="Finalizar #{proyectoDetailsView.estadoProyecto.descripcion}"
 							action="#{proyectoDetailsView.action_finish_proyecto_state}"
 							update="@all" icon="fa fa-check-square-o">
-							<p:dialog visible="#{proyectoDetailsView.showTut}" style="position: absolute; right:inherite; 
-								left:inherite; width:inherite; height:inherite;"/>	
+							<p:dialog visible="#{proyectoDetailsView.showTut}"
+								style="position: absolute; right:inherite; 
+								left:inherite; width:inherite; height:inherite;" />
 						</p:commandButton>
 					</div>
 				</div>
-			</div>
-			<div class="page-content container">
 				<div class="row">
 					<div class="col-md-offset-1 col-md-5">
 						<h:commandLink value="Volver"

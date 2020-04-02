@@ -18,3 +18,20 @@ $(document).ready(function(){
   });
   
 });
+
+
+window.onscroll = function() {
+	stickHeader()
+};
+
+var header = document.getElementById("topHeader");
+
+var sticky = header.offsetTop;
+
+function stickHeader() {
+	if (window.pageYOffset > sticky) {
+		header.classList.add("sticky");
+	} else {
+		header.classList.remove("sticky");
+	}
+}

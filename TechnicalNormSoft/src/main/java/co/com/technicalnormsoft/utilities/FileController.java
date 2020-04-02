@@ -29,7 +29,7 @@ public class FileController implements IFileController {
 	//Method returns file array from EstablecimientoObjetivo directory
 	public File[] getDirectoryFiles(EstablecimientoObjetivo establecimientoObjetivo) 
 			throws Exception {
-		File file = new File("/objetivo_file_content/"
+		File file = new File("C:/objetivo_file_content/"
 				+ establecimientoObjetivo.getEstablecimientoObjetivoId());
 
 		if (file.exists() && file.isDirectory()) {
@@ -119,13 +119,13 @@ public class FileController implements IFileController {
 
 	//Method returns directory to upload; if do not exist, create by EstablecimientoObjetivo Id
 	public String getObjetivoFilePath (EstablecimientoObjetivo establecimientoObjetivo) {
-		File objetivo_file_content = new File("/objetivo_file_content/"
+		File objetivo_file_content = new File("C:/objetivo_file_content/"
 				+ establecimientoObjetivo.getEstablecimientoObjetivoId());
 
 		if (objetivo_file_content.exists()) {
 			return objetivo_file_content.getPath();
 		} else {
-			File newDirectory = new File("/objetivo_file_content/"
+			File newDirectory = new File("C:/objetivo_file_content/"
 					+ establecimientoObjetivo.getEstablecimientoObjetivoId().toString());
 			newDirectory.mkdir();
 

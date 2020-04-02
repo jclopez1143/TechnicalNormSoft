@@ -222,6 +222,7 @@ public class EstablecimientoDetailsView implements Serializable {
 					.getAttributes()
 					.get("selectedProyectoEstablecimiento"));
 			httpSession.setAttribute("selectedProyectoEstablecimiento", selectedProyectoEstablecimiento);
+			httpSession.setAttribute("selectedEstablecimiento", selectedEstablecimiento);
 			FacesContext context = FacesContext.getCurrentInstance();
 			HttpServletRequest origRequest = (HttpServletRequest) context.getExternalContext().getRequest();
 			String contextPath = origRequest.getContextPath();
