@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,6 +91,13 @@ implements IEstablecimientoObjetivoLogic {
 	 */
 	@Autowired
 	IValorDatoLogic logicValorDato;
+
+	/**
+	 * Logic injected by Spring that manages Requisito entities
+	 *
+	 */
+	@Autowired
+	IRequisitoLogic logicRequisito;
 
 	public void validateEstablecimientoObjetivo(
 			EstablecimientoObjetivo establecimientoObjetivo)
@@ -207,12 +212,12 @@ implements IEstablecimientoObjetivoLogic {
 		log.debug("updating EstablecimientoObjetivo instance");
 
 		try {
-			if (entity == null) {
-				throw new ZMessManager().new NullEntityExcepcion(
-						"EstablecimientoObjetivo");
-			}
-
-			validateEstablecimientoObjetivo(entity);
+//			if (entity == null) {
+//				throw new ZMessManager().new NullEntityExcepcion(
+//						"EstablecimientoObjetivo");
+//			}
+//
+//			validateEstablecimientoObjetivo(entity);
 
 			establecimientoObjetivoDAO.update(entity);
 
@@ -354,11 +359,11 @@ implements IEstablecimientoObjetivoLogic {
 	}
 
 	//Method resets all EstablecimientoObjetivo to default state : "No Iniciado"
-	@Transactional(readOnly = true)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void resetAllNewEstablecimientoObjetivoEstado(Integer idProyectoEstablecimiento) throws Exception {
 		log.debug("reseting all EstablecimientoObjetivo estado by idProyectoEstablecimiento instances");
 		List<EstablecimientoObjetivo> establecimientoObjetivos = new ArrayList<EstablecimientoObjetivo>();
-		EstadoObjetivo estadoObjetivo = null;
+		EstadoObjetivo estadoObjetivoNoIniciado = logicEstadoObjetivo.findEstadoObjetivoByDescripcion("No Iniciado");
 		EstadoProyecto estadoProyecto = null;
 		ValorDato valorDatoAutoevaluacion = null;
 		try {
@@ -366,27 +371,41 @@ implements IEstablecimientoObjetivoLogic {
 			establecimientoObjetivos = findEstablecimientoObjetivosByProyectoEstablecimientoId(idProyectoEstablecimiento);
 
 			for (EstablecimientoObjetivo establecimientoObjetivo : establecimientoObjetivos) {
-				estadoObjetivo = logicEstadoObjetivo.findEstadoObjetivoByEstablecimientoObjetivoId(
+				valorDatoAutoevaluacion = logicValorDato.findValorDatoAutoevaluacionByEstablecimientoObjetivoId(
 						establecimientoObjetivo.getEstablecimientoObjetivoId());
-
-				if (estadoObjetivo.getDescripcion().equals("No Iniciado")) {
-					throw new Exception("No ha completado todos los objetivos del Proyecto.");
-				} else {
-					valorDatoAutoevaluacion = logicValorDato.findValorDatoAutoevaluacionByEstablecimientoObjetivoId(
-							establecimientoObjetivo.getEstablecimientoObjetivoId());
-					if (estadoProyecto.getDescripcion().equals("Ejecución") && 
-							!valorDatoAutoevaluacion.getValor().equals("No Cumple Req.")) {
-						estadoObjetivo = logicEstadoObjetivo.findEstadoObjetivoByDescripcion(valorDatoAutoevaluacion.getValor());
+				switch (estadoProyecto.getDescripcion()) {
+				case "Autoevaluación":
+					if (valorDatoAutoevaluacion == null) {
+						establecimientoObjetivo.setEstadoObjetivo(estadoObjetivoNoIniciado);
 					} else {
-						if (!estadoProyecto.getDescripcion().equals("Completado")) {
-							estadoObjetivo = logicEstadoObjetivo.findEstadoObjetivoByDescripcion("No Iniciado");
-						}
+						establecimientoObjetivo.setEstadoObjetivo(logicEstadoObjetivo.findEstadoObjetivoByDescripcion(
+								valorDatoAutoevaluacion.getValor()));
 					}
-					establecimientoObjetivo.setEstadoObjetivo(estadoObjetivo);
-					establecimientoObjetivo.setDateUpdate(new Date());
+					break;
+				
+				case "Ejecución":
+					if (valorDatoAutoevaluacion == null) {
+						logicProyectoEstablecimiento.rollBackFinishProyectoEstado(idProyectoEstablecimiento);
+						resetAllNewEstablecimientoObjetivoEstado(idProyectoEstablecimiento);
+						
+						Requisito requisito = logicRequisito.findRequisitoByEstablecimientoObjetivoId(idProyectoEstablecimiento);
+						throw new Exception("El Objetivo del requisito " + requisito.getNumeral() +"no tiene registrada su Autoevaluación");
+						
+					} else if (!valorDatoAutoevaluacion.getValor().equals("No Cumple Req.")) {
+						establecimientoObjetivo.setEstadoObjetivo(logicEstadoObjetivo.findEstadoObjetivoByDescripcion(
+								valorDatoAutoevaluacion.getValor()));
+					} else {
+						establecimientoObjetivo.setEstadoObjetivo(estadoObjetivoNoIniciado);
+					}
+					break;
 
-					updateEstablecimientoObjetivo(establecimientoObjetivo);
+				default:
+					establecimientoObjetivo.setEstadoObjetivo(estadoObjetivoNoIniciado);
+					break;
 				}
+				establecimientoObjetivo.setDateUpdate(new Date());
+
+				updateEstablecimientoObjetivo(establecimientoObjetivo);
 			}
 		} catch (Exception e) {
 			log.error("reseting all EstablecimientoObjetivo estado by idProyectoEstablecimiento failed", e);

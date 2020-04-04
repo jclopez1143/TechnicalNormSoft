@@ -67,4 +67,7 @@ public interface IRequisitoLogic {
 	
 	public List<RequisitoDTO> findRequisitosDTOByEstadoObjetivoDescripcion(String descripcionEstado,
     		Integer idProyectoEstablecimiento) throws Exception;
+	
+	public Requisito findRequisitoByEstablecimientoObjetivoId(Integer establecimientoObjetivoId)
+	        throws Exception;
 }

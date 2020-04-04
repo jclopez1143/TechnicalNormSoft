@@ -277,6 +277,24 @@ public class RequisitoLogic implements IRequisitoLogic {
         return entity;
     }
     
+    //Method that returns Requisito by EstablecimientoObjetivo Id
+    @Transactional(readOnly = true)
+    public Requisito findRequisitoByEstablecimientoObjetivoId(Integer establecimientoObjetivoId)
+        throws Exception {
+        log.debug("getting Requisito instance");
+
+        Requisito entity = null;
+
+        try {
+            entity = requisitoDAO.findRequisitoByEstablecimientoObjetivoId(establecimientoObjetivoId);
+        } catch (Exception e) {
+            log.error("get Requisito failed", e);
+            throw new ZMessManager().new FindingException("Requisito");
+        } finally {
+        }
+        return entity;
+    }
+    
     //Method that returns Requisito by Norma Id
     @Transactional(readOnly = true)
     public List<RequisitoDTO> findRequisitoByNormaId(Integer idNorma) throws Exception {

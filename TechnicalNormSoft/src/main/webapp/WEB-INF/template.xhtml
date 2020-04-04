@@ -61,7 +61,7 @@
 	</p:dialog> -->
 	<!-- Expired session -->
 	<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();"
-		timeout="#{session.maxInactiveInterval * 1000}" />
+		timeout="#{session.maxInactiveInterval * 100}" />
 	<p:dialog modal="true" widgetVar="sessionTimeOutDialog"
 		header="Sesión Expirada" draggable="false" closable="false">
 		<h:outputText value="la Sesión Ha Expirado" />

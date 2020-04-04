@@ -49,6 +49,7 @@ public class ObjetivoEjecucionDetailsView implements Serializable {
 	private ObjetivoDTO selectedObjetivo;
 	private DatoObjetivoDTO selectedDatoObjetivo;
 	private RegistroDatoDTO selectedRegistro;
+	private EstadoProyecto estadoProyecto;
 	private ProyectoEstablecimientoDTO selectedProyectoEstablecimiento;
 	private EstadoObjetivo estadoObjetivo;
 	private EstablecimientoObjetivo establecimientoObjetivo;
@@ -114,6 +115,9 @@ public class ObjetivoEjecucionDetailsView implements Serializable {
 
 			if(selectedObjetivo != null && selectedProyectoEstablecimiento != null) {
 				requisito = businessDelegatorView.findRequisitoByObjetivoId(selectedObjetivo.getIdObjetivo());
+				
+				estadoProyecto = businessDelegatorView.findEstadoProyectoByProyectoEstablecimientoId(
+						selectedProyectoEstablecimiento.getIdProyectoEstablecimiento());
 
 				establecimientoObjetivo = businessDelegatorView.findEstablecimientoObjetivoByIds(
 						selectedProyectoEstablecimiento.getIdProyectoEstablecimiento(), selectedObjetivo.getIdObjetivo());
@@ -476,6 +480,14 @@ public class ObjetivoEjecucionDetailsView implements Serializable {
 
 	public void setSelectedRegistro(RegistroDatoDTO selectedRegistro) {
 		this.selectedRegistro = selectedRegistro;
+	}
+
+	public EstadoProyecto getEstadoProyecto() {
+		return estadoProyecto;
+	}
+
+	public void setEstadoProyecto(EstadoProyecto estadoProyecto) {
+		this.estadoProyecto = estadoProyecto;
 	}
 
 	public HashMap<String, ValorDatoDTO> getValorDatos() {

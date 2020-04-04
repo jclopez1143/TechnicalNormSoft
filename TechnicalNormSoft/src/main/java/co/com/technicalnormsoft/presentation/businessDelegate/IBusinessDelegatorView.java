@@ -755,7 +755,7 @@ public interface IBusinessDelegatorView {
 			throws Exception;
 	
 	public EstablecimientoObjetivo findEstablecimientoObjetivoByIds(
-	    	Integer idEstablecimiento, Integer idObjetivo) throws Exception;
+	    	Integer idProyectoEstablecimiento, Integer idObjetivo) throws Exception;
     
     public List<ProyectoEstablecimiento> getProyectoEstablecimientoByEstablecimientoId(
     		Integer idEstablecimiento) throws Exception;
@@ -906,4 +906,6 @@ public interface IBusinessDelegatorView {
     public void resetAllNewEstablecimientoObjetivoEstado(Integer idProyectoEstablecimiento) throws Exception;
     
     public void finishProyectoEstado (Integer idProyectoEstablecimiento) throws Exception;
+    
+    public EstablecimientoDTO establecimientoToEstablecimientoDTO(Establecimiento establecimiento) throws Exception;
 }

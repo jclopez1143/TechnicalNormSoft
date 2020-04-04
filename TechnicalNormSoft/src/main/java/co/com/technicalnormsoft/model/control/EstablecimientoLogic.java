@@ -337,6 +337,20 @@ public class EstablecimientoLogic implements IEstablecimientoLogic {
 		}
 		return entity;
 	}
+	
+	@Transactional(readOnly = true)
+	public EstablecimientoDTO establecimientoToEstablecimientoDTO(Establecimiento establecimiento) throws Exception {
+		log.debug("Establecimiento To EstablecimientoDTO instance");
+		
+		EstablecimientoDTO entity = null;
+		try {
+			entity = establecimientoMapper.establecimientoToEstablecimientoDTO(establecimiento);
+		} catch (Exception e) {
+			log.error("Establecimiento To EstablecimientoDTO failed", e);
+			throw new ZMessManager().new FindingException("Establecimiento");
+		}
+		return entity;
+	}
 
 	/**
 	 *

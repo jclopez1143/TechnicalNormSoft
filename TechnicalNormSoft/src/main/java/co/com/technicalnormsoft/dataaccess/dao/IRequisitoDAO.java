@@ -16,4 +16,6 @@ public interface IRequisitoDAO extends Dao<Requisito, Integer> {
 	
 	public List<Requisito> findRequisitosByEstadoObjetivoDescripcion(String descripcionEstado, 
     		int idProyectoEstablecimiento);
+	
+	public Requisito findRequisitoByEstablecimientoObjetivoId(int establecimientoObjetivoId);
 }

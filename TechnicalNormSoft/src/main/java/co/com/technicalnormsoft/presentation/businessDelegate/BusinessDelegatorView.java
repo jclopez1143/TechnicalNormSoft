@@ -1467,8 +1467,8 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	}
 
 	public EstablecimientoObjetivo findEstablecimientoObjetivoByIds(
-			Integer idEstablecimiento, Integer idObjetivo) throws Exception {
-		return establecimientoObjetivoLogic.findEstablecimientoObjetivoByIds(idEstablecimiento, idObjetivo);
+			Integer idProyectoEstablecimiento, Integer idObjetivo) throws Exception {
+		return establecimientoObjetivoLogic.findEstablecimientoObjetivoByIds(idProyectoEstablecimiento, idObjetivo);
 	}
 
 	public List<ProyectoEstablecimiento> getProyectoEstablecimientoByEstablecimientoId(
@@ -1723,5 +1723,9 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     
     public void finishProyectoEstado (Integer idProyectoEstablecimiento) throws Exception {
     	proyectoEstablecimientoLogic.finishProyectoEstado(idProyectoEstablecimiento);
+    }
+    
+    public EstablecimientoDTO establecimientoToEstablecimientoDTO(Establecimiento establecimiento) throws Exception {
+    	return establecimientoLogic.establecimientoToEstablecimientoDTO(establecimiento);
     }
 }

@@ -31,505 +31,507 @@ import javax.validation.Validator;
 
 
 /**
-* @author Silicon Cali
-* 
-*
-*/
+ * @author Silicon Cali
+ * 
+ *
+ */
 @Scope("singleton")
 @Service("ProgramaLogic")
 public class ProgramaLogic implements IProgramaLogic {
-    private static final Logger log = LoggerFactory.getLogger(ProgramaLogic.class);
+	private static final Logger log = LoggerFactory.getLogger(ProgramaLogic.class);
 
-    /**
-     * DAO injected by Spring that manages Programa entities
-     *
-     */
-    @Autowired
-    private IProgramaDAO programaDAO;
-    @Autowired
-    private IProgramaMapper programaMapper;
-    @Autowired
-    private Validator validator;
+	/**
+	 * DAO injected by Spring that manages Programa entities
+	 *
+	 */
+	@Autowired
+	private IProgramaDAO programaDAO;
+	@Autowired
+	private IProgramaMapper programaMapper;
+	@Autowired
+	private Validator validator;
 
-    /**
-    * DAO injected by Spring that manages Objetivo entities
-    *
-    */
-    @Autowired
-    private IObjetivoDAO objetivoDAO;
+	/**
+	 * DAO injected by Spring that manages Objetivo entities
+	 *
+	 */
+	@Autowired
+	private IObjetivoDAO objetivoDAO;
 
-    /**
-    * Logic injected by Spring that manages CategoriaPrograma entities
-    *
-    */
-    @Autowired
-    ICategoriaProgramaLogic logicCategoriaPrograma1;
+	/**
+	 * Logic injected by Spring that manages CategoriaPrograma entities
+	 *
+	 */
+	@Autowired
+	ICategoriaProgramaLogic logicCategoriaPrograma1;
 
-    /**
-    * Logic injected by Spring that manages Proyecto entities
-    *
-    */
-    @Autowired
-    IProyectoLogic logicProyecto2;
-    
-    /**
-     * Logic injected by Spring that manages EstablecimientoObjetivo entities
-     *
-     */
-     @Autowired
-     IEstablecimientoObjetivoLogic logicEstablecimientoObjetivo3;
-     
-     /**
-      * Logic injected by Spring that manages EstadoObjetivo entities
-      *
-      */
-      @Autowired
-      IEstadoObjetivoLogic logicEstadoObjetivo4;
-      
-      /**
-       * Logic injected by Spring that manages EstadoProyecto entities
-       *
-       */
-       @Autowired
-       IEstadoProyectoLogic logicEstadoProyecto5;
+	/**
+	 * Logic injected by Spring that manages Proyecto entities
+	 *
+	 */
+	@Autowired
+	IProyectoLogic logicProyecto2;
 
-    public void validatePrograma(Programa programa) throws Exception {
-        try {
-            Set<ConstraintViolation<Programa>> constraintViolations = validator.validate(programa);
+	/**
+	 * Logic injected by Spring that manages EstablecimientoObjetivo entities
+	 *
+	 */
+	@Autowired
+	IEstablecimientoObjetivoLogic logicEstablecimientoObjetivo3;
 
-            if (constraintViolations.size() > 0) {
-                StringBuilder strMessage = new StringBuilder();
+	/**
+	 * Logic injected by Spring that manages EstadoObjetivo entities
+	 *
+	 */
+	@Autowired
+	IEstadoObjetivoLogic logicEstadoObjetivo4;
 
-                for (ConstraintViolation<Programa> constraintViolation : constraintViolations) {
-                    strMessage.append(constraintViolation.getPropertyPath()
-                                                         .toString());
-                    strMessage.append(" - ");
-                    strMessage.append(constraintViolation.getMessage());
-                    strMessage.append(". \n");
-                }
+	/**
+	 * Logic injected by Spring that manages EstadoProyecto entities
+	 *
+	 */
+	@Autowired
+	IEstadoProyectoLogic logicEstadoProyecto5;
 
-                throw new Exception(strMessage.toString());
-            }
-        } catch (Exception e) {
-            throw e;
-        }
-    }
+	public void validatePrograma(Programa programa) throws Exception {
+		try {
+			Set<ConstraintViolation<Programa>> constraintViolations = validator.validate(programa);
 
-    @Transactional(readOnly = true)
-    public List<Programa> getPrograma() throws Exception {
-        log.debug("finding all Programa instances");
+			if (constraintViolations.size() > 0) {
+				StringBuilder strMessage = new StringBuilder();
 
-        List<Programa> list = new ArrayList<Programa>();
+				for (ConstraintViolation<Programa> constraintViolation : constraintViolations) {
+					strMessage.append(constraintViolation.getPropertyPath()
+							.toString());
+					strMessage.append(" - ");
+					strMessage.append(constraintViolation.getMessage());
+					strMessage.append(". \n");
+				}
 
-        try {
-            list = programaDAO.findAll();
-        } catch (Exception e) {
-            log.error("finding all Programa failed", e);
-            throw new ZMessManager().new GettingException(ZMessManager.ALL +
-                "Programa");
-        } finally {
-        }
+				throw new Exception(strMessage.toString());
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 
-        return list;
-    }
+	@Transactional(readOnly = true)
+	public List<Programa> getPrograma() throws Exception {
+		log.debug("finding all Programa instances");
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void savePrograma(Programa entity) throws Exception {
-        log.debug("saving Programa instance");
+		List<Programa> list = new ArrayList<Programa>();
 
-        try {
-            if (entity == null) {
-                throw new ZMessManager().new NullEntityExcepcion("Programa");
-            }
+		try {
+			list = programaDAO.findAll();
+		} catch (Exception e) {
+			log.error("finding all Programa failed", e);
+			throw new ZMessManager().new GettingException(ZMessManager.ALL +
+					"Programa");
+		} finally {
+		}
 
-//            validatePrograma(entity);
-//
-//            if (getPrograma(entity.getIdPrograma()) != null) {
-//                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-//            }
+		return list;
+	}
 
-            programaDAO.save(entity);
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void savePrograma(Programa entity) throws Exception {
+		log.debug("saving Programa instance");
 
-            log.debug("save Programa successful");
-        } catch (Exception e) {
-            log.error("save Programa failed", e);
-            throw e;
-        } finally {
-        }
-    }
+		try {
+			if (entity == null) {
+				throw new ZMessManager().new NullEntityExcepcion("Programa");
+			}
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deletePrograma(Programa entity) throws Exception {
-        log.debug("deleting Programa instance");
+			//            validatePrograma(entity);
+			//
+			//            if (getPrograma(entity.getIdPrograma()) != null) {
+			//                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
+			//            }
 
-        if (entity == null) {
-            throw new ZMessManager().new NullEntityExcepcion("Programa");
-        }
+			programaDAO.save(entity);
 
-        if (entity.getIdPrograma() == null) {
-            throw new ZMessManager().new EmptyFieldException("idPrograma");
-        }
+			log.debug("save Programa successful");
+		} catch (Exception e) {
+			log.error("save Programa failed", e);
+			throw e;
+		} finally {
+		}
+	}
 
-        List<Objetivo> objetivos = null;
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void deletePrograma(Programa entity) throws Exception {
+		log.debug("deleting Programa instance");
 
-        try {
-            objetivos = objetivoDAO.findByProperty("programa.idPrograma",
-                    entity.getIdPrograma());
+		if (entity == null) {
+			throw new ZMessManager().new NullEntityExcepcion("Programa");
+		}
 
-            if (Utilities.validationsList(objetivos) == true) {
-                throw new ZMessManager().new DeletingException("objetivos");
-            }
+		if (entity.getIdPrograma() == null) {
+			throw new ZMessManager().new EmptyFieldException("idPrograma");
+		}
 
-            programaDAO.delete(entity);
+		List<Objetivo> objetivos = null;
 
-            log.debug("delete Programa successful");
-        } catch (Exception e) {
-            log.error("delete Programa failed", e);
-            throw e;
-        } finally {
-        }
-    }
+		try {
+			objetivos = objetivoDAO.findByProperty("programa.idPrograma",
+					entity.getIdPrograma());
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void updatePrograma(Programa entity) throws Exception {
-        log.debug("updating Programa instance");
+			if (Utilities.validationsList(objetivos) == true) {
+				throw new ZMessManager().new DeletingException("objetivos");
+			}
 
-        try {
-            if (entity == null) {
-                throw new ZMessManager().new NullEntityExcepcion("Programa");
-            }
+			programaDAO.delete(entity);
 
-            validatePrograma(entity);
+			log.debug("delete Programa successful");
+		} catch (Exception e) {
+			log.error("delete Programa failed", e);
+			throw e;
+		} finally {
+		}
+	}
 
-            programaDAO.update(entity);
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void updatePrograma(Programa entity) throws Exception {
+		log.debug("updating Programa instance");
 
-            log.debug("update Programa successful");
-        } catch (Exception e) {
-            log.error("update Programa failed", e);
-            throw e;
-        } finally {
-        }
-    }
+		try {
+			if (entity == null) {
+				throw new ZMessManager().new NullEntityExcepcion("Programa");
+			}
 
-    @Transactional(readOnly = true)
-    public List<ProgramaDTO> getDataPrograma() throws Exception {
-        try {
-            List<Programa> programa = programaDAO.findAll();
+			validatePrograma(entity);
 
-            List<ProgramaDTO> programaDTO = new ArrayList<ProgramaDTO>();
+			programaDAO.update(entity);
 
-            for (Programa programaTmp : programa) {
-                ProgramaDTO programaDTO2 = programaMapper.programaToProgramaDTO(programaTmp);
-                programaDTO.add(programaDTO2);
-            }
+			log.debug("update Programa successful");
+		} catch (Exception e) {
+			log.error("update Programa failed", e);
+			throw e;
+		} finally {
+		}
+	}
 
-            return programaDTO;
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-    
-    //Method that returns a list of ProgramaDTO of a ProyectoEstablecimiento filling Progreso and Descripcion_CategoriaPrograma
-    @Transactional(readOnly = true)
-    public List<ProgramaDTO> getDetailDataProgramaByProyectoEstablecimientoId(
-    		Integer idProyectoEstablecimiento) throws Exception {
-        try {
-        	Proyecto proyecto = logicProyecto2.findProyectoByProyectoEstablecimientoId(idProyectoEstablecimiento);
-            List<Programa> programa = programaDAO.findProgramasByProyectoId(proyecto.getIdProyecto());
+	@Transactional(readOnly = true)
+	public List<ProgramaDTO> getDataPrograma() throws Exception {
+		try {
+			List<Programa> programa = programaDAO.findAll();
 
-            List<ProgramaDTO> programaDTO = new ArrayList<ProgramaDTO>();
+			List<ProgramaDTO> programaDTO = new ArrayList<ProgramaDTO>();
 
-            for (Programa programaTmp : programa) {
-                ProgramaDTO programaDTO2 = programaMapper.programaToProgramaDTO(programaTmp);
-                programaDTO2.setProgreso(getProgramaProgressPercentage(programaTmp.getIdPrograma(), idProyectoEstablecimiento).intValue());
-                programaDTO2.setDescripcion_CategoriaPrograma(
-                		logicCategoriaPrograma1.getCategoriaProgramaByProgramaId(programaTmp.getIdPrograma()).getDescripcion());
-                programaDTO.add(programaDTO2);
-            }
+			for (Programa programaTmp : programa) {
+				ProgramaDTO programaDTO2 = programaMapper.programaToProgramaDTO(programaTmp);
+				programaDTO.add(programaDTO2);
+			}
 
-            return programaDTO;
-        } catch (Exception e) {
-            throw e;
-        }
-    }
+			return programaDTO;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 
-    @Transactional(readOnly = true)
-    public Programa getPrograma(Integer idPrograma) throws Exception {
-        log.debug("getting Programa instance");
+	//Method that returns a list of ProgramaDTO of a ProyectoEstablecimiento filling Progreso and Descripcion_CategoriaPrograma
+	@Transactional(readOnly = true)
+	public List<ProgramaDTO> getDetailDataProgramaByProyectoEstablecimientoId(
+			Integer idProyectoEstablecimiento) throws Exception {
+		try {
+			Proyecto proyecto = logicProyecto2.findProyectoByProyectoEstablecimientoId(idProyectoEstablecimiento);
+			List<Programa> programa = programaDAO.findProgramasByProyectoId(proyecto.getIdProyecto());
 
-        Programa entity = null;
+			List<ProgramaDTO> programaDTO = new ArrayList<ProgramaDTO>();
 
-        try {
-            entity = programaDAO.findById(idPrograma);
-        } catch (Exception e) {
-            log.error("get Programa failed", e);
-            throw new ZMessManager().new FindingException("Programa");
-        } finally {
-        }
+			for (Programa programaTmp : programa) {
+				ProgramaDTO programaDTO2 = programaMapper.programaToProgramaDTO(programaTmp);
+				programaDTO2.setProgreso(getProgramaProgressPercentage(programaTmp.getIdPrograma(), idProyectoEstablecimiento).intValue());
+				programaDTO2.setDescripcion_CategoriaPrograma(
+						logicCategoriaPrograma1.getCategoriaProgramaByProgramaId(programaTmp.getIdPrograma()).getDescripcion());
+				programaDTO.add(programaDTO2);
+			}
 
-        return entity;
-    }
+			return programaDTO;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 
-    @Transactional(readOnly = true)
-    public List<Programa> findPagePrograma(String sortColumnName,
-        boolean sortAscending, int startRow, int maxResults)
-        throws Exception {
-        List<Programa> entity = null;
+	@Transactional(readOnly = true)
+	public Programa getPrograma(Integer idPrograma) throws Exception {
+		log.debug("getting Programa instance");
 
-        try {
-            entity = programaDAO.findPage(sortColumnName, sortAscending,
-                    startRow, maxResults);
-        } catch (Exception e) {
-            throw new ZMessManager().new FindingException("Programa Count");
-        } finally {
-        }
+		Programa entity = null;
 
-        return entity;
-    }
+		try {
+			entity = programaDAO.findById(idPrograma);
+		} catch (Exception e) {
+			log.error("get Programa failed", e);
+			throw new ZMessManager().new FindingException("Programa");
+		} finally {
+		}
 
-    @Transactional(readOnly = true)
-    public Long findTotalNumberPrograma() throws Exception {
-        Long entity = null;
+		return entity;
+	}
 
-        try {
-            entity = programaDAO.count();
-        } catch (Exception e) {
-            throw new ZMessManager().new FindingException("Programa Count");
-        } finally {
-        }
+	@Transactional(readOnly = true)
+	public List<Programa> findPagePrograma(String sortColumnName,
+			boolean sortAscending, int startRow, int maxResults)
+					throws Exception {
+		List<Programa> entity = null;
 
-        return entity;
-    }
-    
-    @Transactional(readOnly = true)
-    public List<Programa> findProgramasByProyectoId(Integer idProyecto)
-        throws Exception {
-        List<Programa> entity = null;
+		try {
+			entity = programaDAO.findPage(sortColumnName, sortAscending,
+					startRow, maxResults);
+		} catch (Exception e) {
+			throw new ZMessManager().new FindingException("Programa Count");
+		} finally {
+		}
 
-        try {
-            entity = programaDAO.findProgramasByProyectoId(idProyecto);
-        } catch (Exception e) {
-            throw new ZMessManager().new FindingException("Programa Count");
-        } finally {
-        }
+		return entity;
+	}
 
-        return entity;
-    }
-    
-    //Method that calculates Programa progress percentage comparing total 
-    //Programa score vs total EstablecimientoObjetivo score
-    @Transactional(readOnly = true)
-    public Double getProgramaProgressPercentage(Integer idPrograma,
-    		Integer idProyectoEstablecimiento) throws Exception {
-    	Programa entity = null;
-    	Double totalProgramaScore = 0.0;
-    	Double totalAcheivedScore = 0.0;
-    	Double progress = 0.0;
-    	EstadoProyecto estadoProyecto = logicEstadoProyecto5.findEstadoProyectoByProyectoEstablecimientoId(
-    			idProyectoEstablecimiento);
-    	try {
+	@Transactional(readOnly = true)
+	public Long findTotalNumberPrograma() throws Exception {
+		Long entity = null;
+
+		try {
+			entity = programaDAO.count();
+		} catch (Exception e) {
+			throw new ZMessManager().new FindingException("Programa Count");
+		} finally {
+		}
+
+		return entity;
+	}
+
+	@Transactional(readOnly = true)
+	public List<Programa> findProgramasByProyectoId(Integer idProyecto)
+			throws Exception {
+		List<Programa> entity = null;
+
+		try {
+			entity = programaDAO.findProgramasByProyectoId(idProyecto);
+		} catch (Exception e) {
+			throw new ZMessManager().new FindingException("Programa Count");
+		} finally {
+		}
+
+		return entity;
+	}
+
+	//Method that calculates Programa progress percentage comparing total 
+	//Programa score vs total EstablecimientoObjetivo score
+	@Transactional(readOnly = true)
+	public Double getProgramaProgressPercentage(Integer idPrograma,
+			Integer idProyectoEstablecimiento) throws Exception {
+		Programa entity = null;
+		Double totalProgramaScore = 0.0;
+		Double totalAcheivedScore = 0.0;
+		Double progress = 0.0;
+		EstadoProyecto estadoProyecto = logicEstadoProyecto5.findEstadoProyectoByProyectoEstablecimientoId(
+				idProyectoEstablecimiento);
+		try {
 			entity = getPrograma(idPrograma);
-			 List<Objetivo> objetivos = objetivoDAO.findByProperty("programa.idPrograma",
-                    entity.getIdPrograma());
-			 EstablecimientoObjetivo establecimientoObjetivo = null;
-			 EstadoObjetivo estadoObjetivo = null;
-			 if (objetivos != null) {
-				 for (Objetivo objetivo : objetivos) {
+			List<Objetivo> objetivos = objetivoDAO.findByProperty("programa.idPrograma",
+					entity.getIdPrograma());
+			EstablecimientoObjetivo establecimientoObjetivo = null;
+			EstadoObjetivo estadoObjetivo = null;
+			if (objetivos != null) {
+				for (Objetivo objetivo : objetivos) {
 					totalProgramaScore = totalProgramaScore + objetivo.getScore();
 					establecimientoObjetivo = logicEstablecimientoObjetivo3.findEstablecimientoObjetivoByIds(
 							idProyectoEstablecimiento, objetivo.getIdObjetivo());
 					if (establecimientoObjetivo != null) {
 						estadoObjetivo = logicEstadoObjetivo4.findEstadoObjetivoByEstablecimientoObjetivoId(
 								establecimientoObjetivo.getEstablecimientoObjetivoId());
-						if (!estadoProyecto.getDescripcion().equals("Autoevaluación")) {
-							if (estadoObjetivo.getDescripcion().equals("Completado")) {
-								totalAcheivedScore = totalAcheivedScore + objetivo.getScore();
-							}
-						} else {
+						if (estadoProyecto.getDescripcion().equals("Autoevaluación")) {
 							if (estadoObjetivo.getDescripcion().equals("No Cumple Req.") ||
 									estadoObjetivo.getDescripcion().equals("Cumple Req.") ||
 									estadoObjetivo.getDescripcion().equals("No Aplica")) {
 								totalAcheivedScore = totalAcheivedScore + objetivo.getScore();
 							}
+						} else {
+							if (estadoObjetivo.getDescripcion().equals("Completado") ||
+									estadoObjetivo.getDescripcion().equals("Cumple Req.") ||
+									estadoObjetivo.getDescripcion().equals("No Aplica")) {
+								totalAcheivedScore = totalAcheivedScore + objetivo.getScore();
+							}
 						}
-						
+
 					}
 				}
 				progress = (totalAcheivedScore*100)/totalProgramaScore;
-			 }
-			 
+			}
+
 		} catch (Exception e) {
 			log.error("update Programa failed", e);
-            throw e;
+			throw e;
 		}
-    	
-    	return progress;
-    }
 
-    /**
-    *
-    * @param varibles
-    *            este arreglo debera tener:
-    *
-    * [0] = String variable = (String) varibles[i]; representa como se llama la
-    * variable en el pojo
-    *
-    * [1] = Boolean booVariable = (Boolean) varibles[i + 1]; representa si el
-    * valor necesita o no ''(comillas simples)usado para campos de tipo string
-    *
-    * [2] = Object value = varibles[i + 2]; representa el valor que se va a
-    * buscar en la BD
-    *
-    * [3] = String comparator = (String) varibles[i + 3]; representa que tipo
-    * de busqueda voy a hacer.., ejemplo: where nombre=william o where nombre<>william,
-        * en este campo iria el tipo de comparador que quiero si es = o <>
-            *
-            * Se itera de 4 en 4..., entonces 4 registros del arreglo representan 1
-            * busqueda en un campo, si se ponen mas pues el continuara buscando en lo
-            * que se le ingresen en los otros 4
-            *
-            *
-            * @param variablesBetween
-            *
-            * la diferencia son estas dos posiciones
-            *
-            * [0] = String variable = (String) varibles[j]; la variable ne la BD que va
-            * a ser buscada en un rango
-            *
-            * [1] = Object value = varibles[j + 1]; valor 1 para buscar en un rango
-            *
-            * [2] = Object value2 = varibles[j + 2]; valor 2 para buscar en un rango
-            * ejempolo: a > 1 and a < 5 --> 1 seria value y 5 seria value2
-                *
-                * [3] = String comparator1 = (String) varibles[j + 3]; comparador 1
-                * ejemplo: a comparator1 1 and a < 5
-                    *
-                    * [4] = String comparator2 = (String) varibles[j + 4]; comparador 2
-                    * ejemplo: a comparador1>1  and a comparador2<5  (el original: a > 1 and a <
-                            * 5) *
-                            * @param variablesBetweenDates(en
-                            *            este caso solo para mysql)
-                            *  [0] = String variable = (String) varibles[k]; el nombre de la variable que hace referencia a
-                            *            una fecha
-                            *
-                            * [1] = Object object1 = varibles[k + 2]; fecha 1 a comparar(deben ser
-                            * dates)
-                            *
-                            * [2] = Object object2 = varibles[k + 3]; fecha 2 a comparar(deben ser
-                            * dates)
-                            *
-                            * esto hace un between entre las dos fechas.
-                            *
-                            * @return lista con los objetos que se necesiten
-                            * @throws Exception
-                            */
-    @Transactional(readOnly = true)
-    public List<Programa> findByCriteria(Object[] variables,
-        Object[] variablesBetween, Object[] variablesBetweenDates)
-        throws Exception {
-        List<Programa> list = new ArrayList<Programa>();
-        String where = new String();
-        String tempWhere = new String();
+		return progress;
+	}
 
-        if (variables != null) {
-            for (int i = 0; i < variables.length; i++) {
-                if ((variables[i] != null) && (variables[i + 1] != null) &&
-                        (variables[i + 2] != null) &&
-                        (variables[i + 3] != null)) {
-                    String variable = (String) variables[i];
-                    Boolean booVariable = (Boolean) variables[i + 1];
-                    Object value = variables[i + 2];
-                    String comparator = (String) variables[i + 3];
+	/**
+	 *
+	 * @param varibles
+	 *            este arreglo debera tener:
+	 *
+	 * [0] = String variable = (String) varibles[i]; representa como se llama la
+	 * variable en el pojo
+	 *
+	 * [1] = Boolean booVariable = (Boolean) varibles[i + 1]; representa si el
+	 * valor necesita o no ''(comillas simples)usado para campos de tipo string
+	 *
+	 * [2] = Object value = varibles[i + 2]; representa el valor que se va a
+	 * buscar en la BD
+	 *
+	 * [3] = String comparator = (String) varibles[i + 3]; representa que tipo
+	 * de busqueda voy a hacer.., ejemplo: where nombre=william o where nombre<>william,
+	 * en este campo iria el tipo de comparador que quiero si es = o <>
+	 *
+	 * Se itera de 4 en 4..., entonces 4 registros del arreglo representan 1
+	 * busqueda en un campo, si se ponen mas pues el continuara buscando en lo
+	 * que se le ingresen en los otros 4
+	 *
+	 *
+	 * @param variablesBetween
+	 *
+	 * la diferencia son estas dos posiciones
+	 *
+	 * [0] = String variable = (String) varibles[j]; la variable ne la BD que va
+	 * a ser buscada en un rango
+	 *
+	 * [1] = Object value = varibles[j + 1]; valor 1 para buscar en un rango
+	 *
+	 * [2] = Object value2 = varibles[j + 2]; valor 2 para buscar en un rango
+	 * ejempolo: a > 1 and a < 5 --> 1 seria value y 5 seria value2
+	 *
+	 * [3] = String comparator1 = (String) varibles[j + 3]; comparador 1
+	 * ejemplo: a comparator1 1 and a < 5
+	 *
+	 * [4] = String comparator2 = (String) varibles[j + 4]; comparador 2
+	 * ejemplo: a comparador1>1  and a comparador2<5  (el original: a > 1 and a <
+	 * 5) *
+	 * @param variablesBetweenDates(en
+	 *            este caso solo para mysql)
+	 *  [0] = String variable = (String) varibles[k]; el nombre de la variable que hace referencia a
+	 *            una fecha
+	 *
+	 * [1] = Object object1 = varibles[k + 2]; fecha 1 a comparar(deben ser
+	 * dates)
+	 *
+	 * [2] = Object object2 = varibles[k + 3]; fecha 2 a comparar(deben ser
+	 * dates)
+	 *
+	 * esto hace un between entre las dos fechas.
+	 *
+	 * @return lista con los objetos que se necesiten
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = true)
+	public List<Programa> findByCriteria(Object[] variables,
+			Object[] variablesBetween, Object[] variablesBetweenDates)
+					throws Exception {
+		List<Programa> list = new ArrayList<Programa>();
+		String where = new String();
+		String tempWhere = new String();
 
-                    if (booVariable.booleanValue()) {
-                        tempWhere = (tempWhere.length() == 0)
-                            ? ("(model." + variable + " " + comparator + " \'" +
-                            value + "\' )")
-                            : (tempWhere + " AND (model." + variable + " " +
-                            comparator + " \'" + value + "\' )");
-                    } else {
-                        tempWhere = (tempWhere.length() == 0)
-                            ? ("(model." + variable + " " + comparator + " " +
-                            value + " )")
-                            : (tempWhere + " AND (model." + variable + " " +
-                            comparator + " " + value + " )");
-                    }
-                }
+		if (variables != null) {
+			for (int i = 0; i < variables.length; i++) {
+				if ((variables[i] != null) && (variables[i + 1] != null) &&
+						(variables[i + 2] != null) &&
+						(variables[i + 3] != null)) {
+					String variable = (String) variables[i];
+					Boolean booVariable = (Boolean) variables[i + 1];
+					Object value = variables[i + 2];
+					String comparator = (String) variables[i + 3];
 
-                i = i + 3;
-            }
-        }
+					if (booVariable.booleanValue()) {
+						tempWhere = (tempWhere.length() == 0)
+								? ("(model." + variable + " " + comparator + " \'" +
+										value + "\' )")
+										: (tempWhere + " AND (model." + variable + " " +
+												comparator + " \'" + value + "\' )");
+					} else {
+						tempWhere = (tempWhere.length() == 0)
+								? ("(model." + variable + " " + comparator + " " +
+										value + " )")
+										: (tempWhere + " AND (model." + variable + " " +
+												comparator + " " + value + " )");
+					}
+				}
 
-        if (variablesBetween != null) {
-            for (int j = 0; j < variablesBetween.length; j++) {
-                if ((variablesBetween[j] != null) &&
-                        (variablesBetween[j + 1] != null) &&
-                        (variablesBetween[j + 2] != null) &&
-                        (variablesBetween[j + 3] != null) &&
-                        (variablesBetween[j + 4] != null)) {
-                    String variable = (String) variablesBetween[j];
-                    Object value = variablesBetween[j + 1];
-                    Object value2 = variablesBetween[j + 2];
-                    String comparator1 = (String) variablesBetween[j + 3];
-                    String comparator2 = (String) variablesBetween[j + 4];
-                    tempWhere = (tempWhere.length() == 0)
-                        ? ("(" + value + " " + comparator1 + " " + variable +
-                        " and " + variable + " " + comparator2 + " " + value2 +
-                        " )")
-                        : (tempWhere + " AND (" + value + " " + comparator1 +
-                        " " + variable + " and " + variable + " " +
-                        comparator2 + " " + value2 + " )");
-                }
+				i = i + 3;
+			}
+		}
 
-                j = j + 4;
-            }
-        }
+		if (variablesBetween != null) {
+			for (int j = 0; j < variablesBetween.length; j++) {
+				if ((variablesBetween[j] != null) &&
+						(variablesBetween[j + 1] != null) &&
+						(variablesBetween[j + 2] != null) &&
+						(variablesBetween[j + 3] != null) &&
+						(variablesBetween[j + 4] != null)) {
+					String variable = (String) variablesBetween[j];
+					Object value = variablesBetween[j + 1];
+					Object value2 = variablesBetween[j + 2];
+					String comparator1 = (String) variablesBetween[j + 3];
+					String comparator2 = (String) variablesBetween[j + 4];
+					tempWhere = (tempWhere.length() == 0)
+							? ("(" + value + " " + comparator1 + " " + variable +
+									" and " + variable + " " + comparator2 + " " + value2 +
+									" )")
+									: (tempWhere + " AND (" + value + " " + comparator1 +
+											" " + variable + " and " + variable + " " +
+											comparator2 + " " + value2 + " )");
+				}
 
-        if (variablesBetweenDates != null) {
-            for (int k = 0; k < variablesBetweenDates.length; k++) {
-                if ((variablesBetweenDates[k] != null) &&
-                        (variablesBetweenDates[k + 1] != null) &&
-                        (variablesBetweenDates[k + 2] != null)) {
-                    String variable = (String) variablesBetweenDates[k];
-                    Object object1 = variablesBetweenDates[k + 1];
-                    Object object2 = variablesBetweenDates[k + 2];
-                    String value = null;
-                    String value2 = null;
+				j = j + 4;
+			}
+		}
 
-                    try {
-                        Date date1 = (Date) object1;
-                        Date date2 = (Date) object2;
-                        value = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date1);
-                        value2 = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date2);
-                    } catch (Exception e) {
-                        list = null;
-                        throw e;
-                    }
+		if (variablesBetweenDates != null) {
+			for (int k = 0; k < variablesBetweenDates.length; k++) {
+				if ((variablesBetweenDates[k] != null) &&
+						(variablesBetweenDates[k + 1] != null) &&
+						(variablesBetweenDates[k + 2] != null)) {
+					String variable = (String) variablesBetweenDates[k];
+					Object object1 = variablesBetweenDates[k + 1];
+					Object object2 = variablesBetweenDates[k + 2];
+					String value = null;
+					String value2 = null;
 
-                    tempWhere = (tempWhere.length() == 0)
-                        ? ("(model." + variable + " between " + value +
-                        " and " + value2 + ")")
-                        : (tempWhere + " AND (model." + variable + " between " +
-                        value + " and " + value2 + ")");
-                }
+					try {
+						Date date1 = (Date) object1;
+						Date date2 = (Date) object2;
+						value = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date1);
+						value2 = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date2);
+					} catch (Exception e) {
+						list = null;
+						throw e;
+					}
 
-                k = k + 2;
-            }
-        }
+					tempWhere = (tempWhere.length() == 0)
+							? ("(model." + variable + " between " + value +
+									" and " + value2 + ")")
+									: (tempWhere + " AND (model." + variable + " between " +
+											value + " and " + value2 + ")");
+				}
 
-        if (tempWhere.length() == 0) {
-            where = null;
-        } else {
-            where = "(" + tempWhere + ")";
-        }
+				k = k + 2;
+			}
+		}
 
-        try {
-            list = programaDAO.findByCriteria(where);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        } finally {
-        }
+		if (tempWhere.length() == 0) {
+			where = null;
+		} else {
+			where = "(" + tempWhere + ")";
+		}
 
-        return list;
-    }
+		try {
+			list = programaDAO.findByCriteria(where);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+		}
+
+		return list;
+	}
 }

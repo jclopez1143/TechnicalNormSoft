@@ -68,7 +68,7 @@ public class ValorDatoDAO extends HibernateDaoImpl<ValorDato, Integer>
     			"select vd from ValorDato vd, DatoObjetivo do "
     			+ "where vd.establecimientoObjetivo.establecimientoObjetivoId = " + establecimientoObjetivoId
     			+ " and vd.datoObjetivo.idDatoObjetivo = do.idDatoObjetivo"
-    			+ " and do.nombre = 'Autoevaluación'");
+    			+ " and do.tipo = 'autoevaluacion'");
     	
     	return (ValorDato) queryObject.uniqueResult();
     }

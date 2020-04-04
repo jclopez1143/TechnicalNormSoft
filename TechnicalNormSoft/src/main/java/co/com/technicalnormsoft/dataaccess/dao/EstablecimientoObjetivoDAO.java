@@ -76,7 +76,7 @@ public class EstablecimientoObjetivoDAO extends HibernateDaoImpl<Establecimiento
     
     public List<EstablecimientoObjetivo> findEstablecimientoObjetivosByProyectoEstablecimientoId(int idProyectoEstablecimiento) {
     	Query queryObject = sessionFactory.getCurrentSession().createQuery(
-    			"select eo from EstablecimientoObjetivo eo"
+    			"select eo from EstablecimientoObjetivo eo "
     			+ "where eo.proyectoEstablecimiento.idProyectoEstablecimiento = " + idProyectoEstablecimiento);
     	
     	return (List<EstablecimientoObjetivo>) queryObject.getResultList();

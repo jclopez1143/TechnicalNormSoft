@@ -1,21 +1,14 @@
 package co.com.technicalnormsoft.presentation.backingBeans;
 
-import co.com.technicalnormsoft.exceptions.*;
 import co.com.technicalnormsoft.model.*;
-import co.com.technicalnormsoft.model.dto.CampoRegistroDTO;
 import co.com.technicalnormsoft.model.dto.DatoObjetivoDTO;
 import co.com.technicalnormsoft.model.dto.NormaDTO;
 import co.com.technicalnormsoft.model.dto.ObjetivoDTO;
 import co.com.technicalnormsoft.model.dto.ProyectoEstablecimientoDTO;
-import co.com.technicalnormsoft.model.dto.RegistroDatoDTO;
-import co.com.technicalnormsoft.model.dto.RequisitoDTO;
-import co.com.technicalnormsoft.model.dto.ValorCampoDTO;
-import co.com.technicalnormsoft.model.dto.ValorDatoDTO;
 import co.com.technicalnormsoft.presentation.businessDelegate.*;
 import co.com.technicalnormsoft.utilities.*;
 
 import org.primefaces.component.commandbutton.CommandButton;
-import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
@@ -24,10 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -225,14 +215,12 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 
 						txtNuevoEstadoObjetivo = txtEstado;	
 
-
 						loadedFiles = (establecimientoObjetivo != null) ? 
 								businessDelegatorView.getDirectoryFiles(establecimientoObjetivo) : new File[0];
 
 								btnSave = new CommandButton();
 								btnSave.setDisabled(true);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -298,6 +286,7 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 			establecimientoObjetivo.setDateIn(new Date());
 
 			businessDelegatorView.saveEstablecimientoObjetivo(establecimientoObjetivo);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -345,12 +334,16 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 			e.printStackTrace();
 		}
 	}
-
-	//Method uploads file for Objetivo accomplishment
-	public String upload(FileUploadEvent event) {
+	
+	public String action_set_upload() {
 		if (establecimientoObjetivo == null) {
 			create_establecimiento_bjetivo();
 		}
+		return "";
+	}
+
+	//Method uploads file for Objetivo accomplishment
+	public String upload(FileUploadEvent event) {
 		try {
 			businessDelegatorView.upload(event, establecimientoObjetivo);
 			loadedFiles = businessDelegatorView.getDirectoryFiles(establecimientoObjetivo);
@@ -408,7 +401,6 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 					"Ha ocurrido un error al descargar el archivo. Por favor, intente más tarde.", null);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
-
 		return "";
 	}
 

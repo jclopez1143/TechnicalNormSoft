@@ -1,8 +1,5 @@
 package co.com.technicalnormsoft.presentation.backingBeans;
 
-import co.com.technicalnormsoft.model.Establecimiento;
-import co.com.technicalnormsoft.model.EstablecimientoObjetivo;
-import co.com.technicalnormsoft.model.EstadoObjetivo;
 import co.com.technicalnormsoft.model.EstadoProyecto;
 import co.com.technicalnormsoft.model.Norma;
 import co.com.technicalnormsoft.model.dto.NormaDTO;
@@ -21,7 +18,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -81,19 +77,27 @@ public class RequisitoDetailsView implements Serializable {
 			EstadoProyecto estadoProyecto = businessDelegatorView.findEstadoProyectoByProyectoEstablecimientoId(
 					selectedProyectoEstablecimiento.getIdProyectoEstablecimiento());
 			
+			if (selectedObjetivo.getEstadoDescripcion() == null) {
+				selectedObjetivo.setEstadoDescripcion(
+						businessDelegatorView.findEstadoObjetivoByObjetivoIdProyectoEstablecimientoId(
+								selectedProyectoEstablecimiento.getIdProyectoEstablecimiento(), 
+								selectedObjetivo.getIdObjetivo()).getDescripcion()); 
+			}
+			
 			String path = "";
 			
 			switch (estadoProyecto.getDescripcion()) {
 			case "Ejecución":
+				if (selectedObjetivo.getEstadoDescripcion().equals("Cumple Req.") ||
+						selectedObjetivo.getEstadoDescripcion().equals("No Aplica")) {
+					path = "/XHTML/detallesObjetivoAutoevaluacion.xhtml";
+					break;
+				}
 				path = "/XHTML/detallesObjetivoEjecucion.xhtml";
 				break;
-				
+
 			case "Autoevaluación":
 				path = "/XHTML/detallesObjetivoAutoevaluacion.xhtml";
-				break;
-
-			default:
-				path = "/XHTML/detallesObjetivoRevision.xhtml";
 				break;
 			}
 			

@@ -43,14 +43,14 @@
 									<p>#{objetivoAutoevaluacionDetailsView.selectedObjetivo.descripcion}</p>
 									<br></br>
 									<div align="center">
-										<p:selectOneButton 
+										<p:selectOneButton
 											value="#{objetivoAutoevaluacionDetailsView.txtNuevoEstadoObjetivo}"
-											disabled="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion ne
+											rendered="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion eq
 												'Autoevaluación') ? true : false}">
 											<f:selectItems var="est" itemValue="#{est}"
 												value="#{fn:split(objetivoAutoevaluacionDetailsView.datoAutoevaluacion.magnitud, ',')}" />
 											<p:ajax update=":form" event="change" async="true"
-												listener="#{objetivoAutoevaluacionDetailsView.action_set_selected_option}"/>
+												listener="#{objetivoAutoevaluacionDetailsView.action_set_selected_option}" />
 										</p:selectOneButton>
 									</div>
 									<br></br>
@@ -78,12 +78,14 @@
 														<h:outputText value="Eliminar" />
 													</f:facet>
 													<div align="center">
-														<p:commandButton id="btnDelete" title="Eliminar" styleClass="datatable-button"
+														<p:commandButton id="btnDelete" title="Eliminar"
+															styleClass="datatable-button"
 															actionListener="#{objetivoAutoevaluacionDetailsView.deleteFile}"
 															onclick="if(!confirm('Está seguro que desea eliminar #{file.name}?')){return false;}"
-															icon="fa fa-fw fa-times-circle" disabled="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion 
+															icon="fa fa-fw fa-times-circle"
+															disabled="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion 
 																ne 'Autoevaluación') ? true : false}"
-															update=":form:fileDataTable :form:btnSave" immediate="true">
+															update=":form:fileDataTable" immediate="true">
 															<f:attribute name="file" value="#{file}" />
 														</p:commandButton>
 													</div>
@@ -94,25 +96,31 @@
 											</div>
 											<br></br>
 
-											<p class="description-label">Adjunte los archivos de
-												soporte suficientes que justifiquen el cumplimiento del
-												objetivo.</p>
+											<div style="display: #{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion
+												eq 'Autoevaluación') ? 'block' : 'none'}">
+												<p class="description-label">Adjunte los archivos de
+													soporte suficientes que justifiquen el cumplimiento del
+													objetivo.</p>
 
-											<p:commandButton styleClass="btn btn-primary" value="Subir Archivos"
-												icon="fa fa-upload" disabled="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion 
-													ne 'Autoevaluación') ? true : false}" onclick="PF('dialogUpload').show();" />
+												<p:commandButton styleClass="btn btn-primary"
+													value="Subir Archivos"
+													action="#{objetivoAutoevaluacionDetailsView.action_save_establecimiento_bjetivo}"
+													icon="fa fa-upload" onclick="PF('dialogUpload').show();" />
+											</div>
 										</c:when>
 
 										<c:when
 											test="#{objetivoAutoevaluacionDetailsView.txtNuevoEstadoObjetivo == 'No Aplica'}">
-											<p class="description-label">Describa las razones por las
+											<p class="description-label">Descripción de las razones por las
 												cuales no aplica el requisito en el establecimiento.</p>
 											<div align="center">
-												<p:inputTextarea style="width: 80%;"
+												<p:inputTextarea style="width: 80%; resize: none;"
 													value="#{objetivoAutoevaluacionDetailsView.txtObjetivoResolucion}"
-													autoResize="false" >
+													disabled="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion 
+														ne 'Autoevaluación') ? true : false}"
+													autoResize="true" >
 													<f:ajax event="blur" render=":form:btnSave"
-														listener="#{objetivoAutoevaluacionDetailsView.action_set_resolucion_data}"/>	
+														listener="#{objetivoAutoevaluacionDetailsView.action_set_resolucion_data}" />
 												</p:inputTextarea>
 											</div>
 										</c:when>
@@ -120,11 +128,14 @@
 
 									<br></br>
 									<div align="center">
-										<p:commandButton id="btnSave" binding="#{objetivoAutoevaluacionDetailsView.btnSave}"
-											styleClass="btn btn-primary" value="Guardar" icon="fa fa-save" 
+										<p:commandButton id="btnSave"
+											binding="#{objetivoAutoevaluacionDetailsView.btnSave}"
+											styleClass="btn btn-primary" value="Guardar"
+											icon="fa fa-save"
 											action="#{objetivoAutoevaluacionDetailsView.action_save_establecimiento_bjetivo()}"
-											update="@all" disabled="#{(objetivoAutoevaluacionDetailsView.txtObjetivoResolucion 
-												eq '') ? true : false}" />
+											rendered="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion 
+												eq 'Autoevaluación') ? true : false}"
+											update="@all" />
 									</div>
 									<br></br>
 								</div>
@@ -133,7 +144,7 @@
 
 						<br></br>
 						<h:commandLink value="Volver"
-							onclick="history.go(-1);return false;"/>
+							onclick="history.go(-1);return false;" />
 					</div>
 				</div>
 			</div>
@@ -148,7 +159,7 @@
 				<p:fileUpload label="Agregar" uploadLabel="Cargar"
 					cancelLabel="Cancelar"
 					fileUploadListener="#{objetivoAutoevaluacionDetailsView.upload}"
-					mode="advanced" dragDropSupport="false" 
+					mode="advanced" dragDropSupport="false"
 					update=":form :dialogUpload" sizeLimit="10000000"
 					invalidSizeMessage="La carga no puede ser mayor a 10MB"
 					invalidFileMessage="El formato de archivo no es permitido. 

@@ -135,6 +135,8 @@
 									<div align="center">
 										<p:commandButton styleClass="btn btn-primary"
 											value="Finalizar"
+											rendered="#{objetivoEjecucionDetailsView.estadoProyecto.descripcion eq 'Ejecución'
+												? true : false}"
 											action="#{objetivoEjecucionDetailsView.action_resolve_objetivo()}"
 											update=":dialogResolucion :form" />
 									</div>

@@ -83,4 +83,6 @@ public interface IProyectoEstablecimientoLogic {
     public boolean isProyectoStateFinished(Integer idProyectoEstablecimiento) throws Exception;
     
     public void finishProyectoEstado (Integer idProyectoEstablecimiento) throws Exception;
+    
+    public void rollBackFinishProyectoEstado (Integer idProyectoEstablecimiento) throws Exception;
 }

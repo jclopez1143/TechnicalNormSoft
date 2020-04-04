@@ -73,8 +73,12 @@ public class ProyectoDetailsView implements Serializable {
 
 	public String action_set_details() {
 		try {
-			selectedEstablecimiento = (EstablecimientoDTO) httpSession.getAttribute("selectedEstablecimiento");
+			
 			selectedProyectoEstablecimiento = (ProyectoEstablecimientoDTO) httpSession.getAttribute("selectedProyectoEstablecimiento");
+			
+			selectedEstablecimiento = businessDelegatorView.establecimientoToEstablecimientoDTO(
+					businessDelegatorView.findEstablecimientoByProyectoEstablecimientoId(
+							selectedProyectoEstablecimiento.getIdProyectoEstablecimiento()));
 			
 			estadoProyecto = businessDelegatorView.findEstadoProyectoByProyectoEstablecimientoId(
 					selectedProyectoEstablecimiento.getIdProyectoEstablecimiento());
@@ -109,13 +113,29 @@ public class ProyectoDetailsView implements Serializable {
 
 			httpSession.setAttribute("selectedObjetivo", selectedObjetivo);
 			
+			if (selectedObjetivo.getEstadoDescripcion() == null) {
+				selectedObjetivo.setEstadoDescripcion(
+						businessDelegatorView.findEstadoObjetivoByObjetivoIdProyectoEstablecimientoId(
+								selectedProyectoEstablecimiento.getIdProyectoEstablecimiento(), 
+								selectedObjetivo.getIdObjetivo()).getDescripcion()); 
+			}
+			
 			String path = "";
 			
-			if (estadoProyecto.getDescripcion().contains("Autoevaluación")) {
-				path = "/XHTML/detallesObjetivoAutoevaluacion.xhtml";
-			} else {
+			switch (estadoProyecto.getDescripcion()) {
+			case "Ejecución":
+				if (selectedObjetivo.getEstadoDescripcion().equals("Cumple Req.") ||
+						selectedObjetivo.getEstadoDescripcion().equals("No Aplica")) {
+					path = "/XHTML/detallesObjetivoAutoevaluacion.xhtml";
+					break;
+				}
 				path = "/XHTML/detallesObjetivoEjecucion.xhtml";
-			} 
+				break;
+
+			case "Autoevaluación":
+				path = "/XHTML/detallesObjetivoAutoevaluacion.xhtml";
+				break;
+			}
 			
 			FacesContext context = FacesContext.getCurrentInstance();
 			HttpServletRequest origRequest = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -168,8 +188,6 @@ public class ProyectoDetailsView implements Serializable {
 	public String action_finish_proyecto_state() {
 		try {
 			if (progresoProyecto >= 100 && selectedProyectoEstablecimiento != null) {
-				businessDelegatorView.resetAllNewEstablecimientoObjetivoEstado(
-						selectedProyectoEstablecimiento.getIdProyectoEstablecimiento());
 				
 				ProyectoEstablecimiento proyectoEstablecimiento = businessDelegatorView.getProyectoEstablecimiento(
 						selectedProyectoEstablecimiento.getIdProyectoEstablecimiento());

@@ -336,10 +336,11 @@ implements IProyectoEstablecimientoLogic {
 		double progress = 0.0;
 		double totalScore = 0.0;
 		EstadoProyecto estadoProyecto = logicEstadoProyecto2.findEstadoProyectoByProyectoEstablecimientoId(idProyectoEstablecimiento);
+		
 		try {
 			List<Objetivo> objetivos = logicObjetivo5.findObjetivosByProyectoEstablecimientoId(idProyectoEstablecimiento);
 			EstablecimientoObjetivo establecimientoObjetivo;
-
+			
 			for (Objetivo objetivo : objetivos) {
 				totalScore = totalScore + objetivo.getScore();
 				establecimientoObjetivo = logicEstablecimientoObjetivo6.findEstablecimientoObjetivoByIds(idProyectoEstablecimiento, objetivo.getIdObjetivo());
@@ -347,16 +348,16 @@ implements IProyectoEstablecimientoLogic {
 				if (establecimientoObjetivo != null) {
 					EstadoObjetivo estadoObjetivo = logicEstadoObjetivo7.findEstadoObjetivoByEstablecimientoObjetivoId(
 							establecimientoObjetivo.getEstablecimientoObjetivoId());
-					if (!estadoProyecto.getDescripcion().equals("Autoevaluación")) {
-						if (estadoObjetivo.getDescripcion().equals("Completado")) {
-							progress = progress + objetivo.getScore();
-						}
-					} else {
+					if (estadoProyecto.getDescripcion().equals("Autoevaluación")) {
 						if (estadoObjetivo.getDescripcion().equals("No Cumple Req.") ||
 								estadoObjetivo.getDescripcion().equals("Cumple Req.") ||
 								estadoObjetivo.getDescripcion().equals("No Aplica")) {
 							progress = progress + objetivo.getScore();
 						}
+					} else if (estadoObjetivo.getDescripcion().equals("Completado") ||
+							estadoObjetivo.getDescripcion().equals("Cumple Req.") ||
+							estadoObjetivo.getDescripcion().equals("No Aplica")) {
+						progress = progress + objetivo.getScore();
 					}
 				}
 			}
@@ -505,24 +506,21 @@ implements IProyectoEstablecimientoLogic {
 	}
 
 	//Method finishes ProyectoEstablecimiento changing actual Estado and reset all EstablecimientoObjetivo
-	@Transactional(readOnly = true)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void finishProyectoEstado (Integer idProyectoEstablecimiento) throws Exception {
 		log.debug("finish Proyecto Estado instance");
 		try {
 			ProyectoEstablecimiento entity = getProyectoEstablecimiento(idProyectoEstablecimiento);
 			EstadoProyecto estadoProyecto = logicEstadoProyecto2.findEstadoProyectoByProyectoEstablecimientoId(
 					entity.getIdProyectoEstablecimiento());
-
-			if (getProyectoEstablecimeintoProgress(idProyectoEstablecimiento) <= 100d) {
+			double proyectoProgress = getProyectoEstablecimeintoProgress(idProyectoEstablecimiento);
+			if (proyectoProgress < 100d) {
 				throw new Exception("Debe completar todos los objetivos del Proyecto para finalizar "
 						+ estadoProyecto.getDescripcion());
 			}
 
 			switch (estadoProyecto.getDescripcion()) {
 			case "Autoevaluación":
-				estadoProyecto = logicEstadoProyecto2.findEstadoProyectoByDescripcion("Revisión Autoevaluación");
-				break;
-			case "Revisión Autoevaluación":
 				estadoProyecto = logicEstadoProyecto2.findEstadoProyectoByDescripcion("Ejecución");
 				break;
 			case "Ejecución":
@@ -532,16 +530,51 @@ implements IProyectoEstablecimientoLogic {
 				estadoProyecto = logicEstadoProyecto2.findEstadoProyectoByDescripcion("Completado");
 				break;
 			}
-			
+
 			entity.setEstadoProyecto(estadoProyecto);
 			entity.setDateUpdate(new Date());
-			
+
 			updateProyectoEstablecimiento(entity);
-			
+
 			logicEstablecimientoObjetivo6.resetAllNewEstablecimientoObjetivoEstado(idProyectoEstablecimiento);
 
 		} catch (Exception e) {
 			log.error("finish Proyecto Estado failed", e);
+			throw new Exception(e);
+		}
+	}
+
+
+	//Method rolls back ProyectoEstablecimiento changing actual Estado to previous Estado
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void rollBackFinishProyectoEstado (Integer idProyectoEstablecimiento) throws Exception {
+		log.debug("rollback finish Proyecto Estado instance");
+		try {
+			ProyectoEstablecimiento entity = getProyectoEstablecimiento(idProyectoEstablecimiento);
+			EstadoProyecto estadoProyecto = logicEstadoProyecto2.findEstadoProyectoByProyectoEstablecimientoId(
+					entity.getIdProyectoEstablecimiento());
+
+			switch (estadoProyecto.getDescripcion()) {
+			case "Autoevaluación":
+				estadoProyecto = logicEstadoProyecto2.findEstadoProyectoByDescripcion("Ejecución");
+				break;
+			case "Ejecución":
+				estadoProyecto = logicEstadoProyecto2.findEstadoProyectoByDescripcion("Autoevaluación");
+				break;
+			case "Revisión Ejecución":
+				estadoProyecto = logicEstadoProyecto2.findEstadoProyectoByDescripcion("Ejecución");
+				break;
+			}
+
+			entity.setEstadoProyecto(estadoProyecto);
+			entity.setDateUpdate(new Date());
+
+			updateProyectoEstablecimiento(entity);
+
+			logicEstablecimientoObjetivo6.resetAllNewEstablecimientoObjetivoEstado(idProyectoEstablecimiento);
+
+		} catch (Exception e) {
+			log.error("rollback finish Proyecto Estado failed", e);
 			throw new Exception(e);
 		}
 	}

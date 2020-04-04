@@ -124,20 +124,28 @@ public class ProgramaDetailsView implements Serializable {
 
 			EstadoProyecto estadoProyecto = businessDelegatorView.findEstadoProyectoByProyectoEstablecimientoId(
 					selectedProyectoEstablecimiento.getIdProyectoEstablecimiento());
+			
+			if (selectedObjetivo.getEstadoDescripcion() == null) {
+				selectedObjetivo.setEstadoDescripcion(
+						businessDelegatorView.findEstadoObjetivoByObjetivoIdProyectoEstablecimientoId(
+								selectedProyectoEstablecimiento.getIdProyectoEstablecimiento(), 
+								selectedObjetivo.getIdObjetivo()).getDescripcion()); 
+			}
 
 			String path = "";
 
 			switch (estadoProyecto.getDescripcion()) {
 			case "Ejecución":
+				if (selectedObjetivo.getEstadoDescripcion().equals("Cumple Req.") ||
+						selectedObjetivo.getEstadoDescripcion().equals("No Aplica")) {
+					path = "/XHTML/detallesObjetivoAutoevaluacion.xhtml";
+					break;
+				}
 				path = "/XHTML/detallesObjetivoEjecucion.xhtml";
 				break;
 
 			case "Autoevaluación":
 				path = "/XHTML/detallesObjetivoAutoevaluacion.xhtml";
-				break;
-
-			default:
-				path = "/XHTML/detallesObjetivoRevision.xhtml";
 				break;
 			}
 

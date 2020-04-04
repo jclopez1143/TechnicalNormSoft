@@ -67,4 +67,6 @@ public interface IEstablecimientoLogic {
     
     public Establecimiento findEstablecimientoByProyectoEstablecimientoId(Integer idProyectoEstablecimiento)
     	throws Exception;
+    
+    public EstablecimientoDTO establecimientoToEstablecimientoDTO(Establecimiento establecimiento) throws Exception;
 }

@@ -45,6 +45,15 @@ public class RequisitoDAO extends HibernateDaoImpl<Requisito, Integer>
     	return (Requisito) queryObject.uniqueResult();
     }
     
+    public Requisito findRequisitoByEstablecimientoObjetivoId(int establecimientoObjetivoId) {
+    	Query queryObject = sessionFactory.getCurrentSession().createQuery(
+    			"select r from Requisito r, EstablecimientoObjetivo eo "
+    			+ "where eo.objetivo.requisito.idRequisito = r.idRequisito "
+    			+ "and eo.establecimientoObjetivoId =" + establecimientoObjetivoId);
+    	
+    	return (Requisito) queryObject.uniqueResult();
+    }
+    
     public List<Requisito> findRequisitoByNormaId(int idNorma) {
     	Query queryObject = sessionFactory.getCurrentSession().createQuery(
     			"select r from Requisito r "
