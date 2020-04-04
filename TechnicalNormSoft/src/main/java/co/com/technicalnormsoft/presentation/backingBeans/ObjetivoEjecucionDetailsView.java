@@ -1,6 +1,5 @@
 package co.com.technicalnormsoft.presentation.backingBeans;
 
-import co.com.technicalnormsoft.exceptions.*;
 import co.com.technicalnormsoft.model.*;
 import co.com.technicalnormsoft.model.dto.CampoRegistroDTO;
 import co.com.technicalnormsoft.model.dto.DatoObjetivoDTO;
