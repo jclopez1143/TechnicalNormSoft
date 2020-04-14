@@ -389,7 +389,7 @@ implements IEstablecimientoObjetivoLogic {
 						resetAllNewEstablecimientoObjetivoEstado(idProyectoEstablecimiento);
 						
 						Requisito requisito = logicRequisito.findRequisitoByEstablecimientoObjetivoId(idProyectoEstablecimiento);
-						throw new Exception("El Objetivo del requisito " + requisito.getNumeral() +"no tiene registrada su Autoevaluación");
+						throw new Exception("El Objetivo del requisito " + requisito.getNumeral() + " no tiene registrada su Autoevaluación");
 						
 					} else if (!valorDatoAutoevaluacion.getValor().equals("No Cumple Req.")) {
 						establecimientoObjetivo.setEstadoObjetivo(logicEstadoObjetivo.findEstadoObjetivoByDescripcion(

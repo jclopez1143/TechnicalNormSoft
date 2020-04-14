@@ -189,6 +189,7 @@ a[data-toggle="collapse"] {
 	background-color: #66a9e3;
 	color: #FFFFFF;
 	font-weight: bold;
+	text-shadow: none;
 }
 
 .ui-datatable .ui-state-default input {
@@ -275,6 +276,44 @@ a[data-toggle="collapse"] {
 	padding: .3em 1em .3em 1.7em;
 }
 
+.ui-progressbar.ui-widget-content {
+	background-color: #f0f0f0;
+	background-image: none;
+	box-shadow: none;
+	webkit-box-shadow: none;
+}
+
+.ui-progressbar .ui-progressbar-value.ui-widget-header {
+	background-image: none;
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-titlebar {
+	background-color: #3B7FB8;
+    font-weight: 540;
+    padding: .5em 1em .3em;
+    border-bottom: none;
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-title {
+	color: #fff;
+	font-size: 16px;
+}
+
+/* .ui-dialog.ui-widget-content .ui-state-hover, .ui-dialog.ui-widget-header .ui-state-hover{
+	background-image: none !important;
+	background-color: #66a9e3;
+	font-weight: normal;
+} */
+
+.ui-dialog.ui-widget-content .ui-dialog-titlebar-close{
+	margin-top: 1%;
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-titlebar-close:hover {
+	background-image: none;
+	background-color: #66a9e3;
+}
+
 /* Primefaces Style */
 
 /* MENU BAR */
@@ -297,6 +336,7 @@ body {
 
 .page-content {
 	padding: 16px;
+	padding-bottom: 80px;
 }
 
 .sticky+form#form>.page-content {
@@ -313,10 +353,11 @@ footer {
 	background-color: #3b7fb8;
 	color: #fff;
 	font-size: 14px;
-	line-height: 25px;
-	padding: 10px 0px 10px 0px;
-	position: relative;
-	bottom: 0px;
+	position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 25px;
 }
 
 footer a {
@@ -354,6 +395,8 @@ footer .copy {
 	position: fixed;
 	top: 0;
 	width: 100%;
+	box-shadow: rgba(0, 0, 0, 0.4) 0 4px 6px;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 4px 6px;
 }
 
 .header .logo h1 {

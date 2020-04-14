@@ -54,19 +54,28 @@
 	<ui:include src="footer.xhtml" />
 
 
-	<!-- <p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+	<p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
 		draggable="false" closable="false">
 		<p:graphicImage
 			value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />
-	</p:dialog> -->
+	</p:dialog>
 	<!-- Expired session -->
 	<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();"
-		timeout="#{session.maxInactiveInterval * 100}" />
+		timeout="#{session.maxInactiveInterval * 1000}" />
 	<p:dialog modal="true" widgetVar="sessionTimeOutDialog"
-		header="Sesión Expirada" draggable="false" closable="false">
-		<h:outputText value="la Sesión Ha Expirado" />
-		<input id="confirmBackToLogin" type="button" value="Iniciar Sesión"
-			onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />
+		draggable="false" closable="false" showHeader="false"
+		resizable="false">
+		<div class="content-wrap">
+			<div align="center">
+				<p:graphicImage value="/images/times-circle-o-55x55.svg" />
+				<h3>Sesión Expirada</h3>
+				<p:outputLabel styleClass="description-label"
+					value="Por favor, ingrese nuevamente." />
+				<div style="height: 40px;"></div>
+				<p:commandButton id="confirmBackToLogin" styleClass="btn btn-info" value="Iniciar Sesión"
+					onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';"/>
+			</div>
+		</div>
 	</p:dialog>
 
 </h:body>

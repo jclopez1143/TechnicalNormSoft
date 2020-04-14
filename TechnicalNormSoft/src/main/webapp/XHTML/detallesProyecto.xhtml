@@ -107,12 +107,12 @@
 					<div class="col-md-5">
 						<div class="card-wrapper">
 							<div class="card"
-								style="min-height: 385px; display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Ejecución'
-									|| proyectoDetailsView.estadoProyecto.descripcion eq 'Revisión Ejecución')? 'block': 'none'}">
+								style="min-height: 385px; display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Ejecución'|| proyectoDetailsView.estadoProyecto.descripcion eq 'Revisión Ejecución')? 'block': 'none'}">
 								<div class="card-w-header">Objetivos en Curso</div>
 								<div class="content-wrap">
 									<p:dataTable value="#{proyectoDetailsView.objetivosEnCurso}"
-										var="objetivo" paginator="true" rows="5" scrollable="true">
+										var="objetivo" paginator="true" rows="5" scrollable="true"
+										emptyMessage="No se encontraron Objetivos en Curso.">
 										<p:column sortBy="#{objetivo.descripcion}">
 											<f:facet name="header">
 												<h:outputText value="Descripción" />
@@ -134,14 +134,13 @@
 							</div>
 
 							<div class="card"
-								style="min-height: 385px; display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Autoevaluación'
-									|| proyectoDetailsView.estadoProyecto.descripcion eq 'Revisión Autoevaluación') ? 'block': 'none'}">
+								style="min-height: 385px; display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Autoevaluación')? 'block': 'none'}">
 								<div class="card-w-header">Requisitos Cumplidos</div>
 								<div class="content-wrap">
 									<p:dataTable
 										value="#{proyectoDetailsView.requisitoCompletados}"
 										var="requisito" paginator="true" rows="5" scrollable="true"
-										scrollHeight="225">
+										scrollHeight="225" emptyMessage="No se encontraron Requesitos Cumplidos.">
 										<p:column sortBy="#{requisito.descripcion}">
 											<f:facet name="header">
 												<h:outputText value="Descripción" />
@@ -170,12 +169,8 @@
 							<p:commandButton styleClass="btn btn-warning"
 								rendered="#{proyectoDetailsView.showFinishBtn}"
 								value="Finalizar #{proyectoDetailsView.estadoProyecto.descripcion}"
-								action="#{proyectoDetailsView.action_finish_proyecto_state}"
-								update=":form" icon="fa fa-check-square-o">
-								<p:dialog visible="#{proyectoDetailsView.showTut}"
-									style="position: absolute; right:inherite; 
-									left:inherite; width:inherite; height:inherite;" />
-							</p:commandButton>
+								onclick="PF('dialogConfirmFinishState').show();"
+								icon="fa fa-check-square-o" />
 						</div>
 					</div>
 				</div>
@@ -187,5 +182,71 @@
 				</div>
 			</div>
 		</h:form>
+
+		<p:dialog id="dialogConfirmFinishState" appendTo="@(body)"
+			draggable="true" closable="false" showEffect="blind"
+			hideEffect="blind" resizable="false" modal="true" width="500"
+			header="Finalizar #{proyectoDetailsView.estadoProyecto.descripcion}"
+			widgetVar="dialogConfirmFinishState" responsive="true">
+			<h:form id="ConfirmDialogform">
+				<div style="text-align: justify">
+					<p
+						style="display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Autoevaluación')? 'block':'none'}">
+						Una vez completados todos los programas (con un progreso del
+						100%), podrá finalizar el proceso de Autoevaluación e iniciar el
+						proceso de Ejecución. Recuerde que una vez el Proyecto entre en
+						Ejecución, los objetivo que Cumplieron o No Aplicaron su
+						Requisito, no podrán ser modificados. Por favor, asegurese primero
+						de tener correctamente registrados los objetivos de la
+						Autoevaluación.</p>
+
+					<p style="display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Ejecución')? 'block':'none'}">
+						Una vez completados todos los programas (con un progreso del
+						100%), podrá finalizar el proceso de Ejecución e iniciar el
+						proceso de Revisión Ejecución. Durante la Revisión de Ejecución
+						deberá asegurar la correctitud de los datos de cada objetivo antes
+						de finalizar el Proyecto, permitiendo modificar y corregir
+						cualquier error en los Objetivos.
+					</p>
+				</div>
+				<div align="center">
+					<p>¿Desea continuar?</p>
+					<br></br>
+					<p:commandButton styleClass="btn btn-primary" value="Aceptar"
+						action="#{proyectoDetailsView.action_finish_proyecto_state}"
+						update="@all" />
+					<p:commandButton styleClass="btn btn-danger" value="Cancelar"
+						onclick="PF('dialogConfirmFinishState').hide();" />
+				</div>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="dialogFinishState" appendTo="@(body)" draggable="true"
+			closable="false" showEffect="blind" hideEffect="blind"
+			resizable="false" modal="true" width="500" header="¡Felicidades!"
+			widgetVar="dialogFinishState" responsive="true">
+			<div style="text-align: justify">
+				<p
+					style="display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Ejecución')? 'block':'none'}">
+					Ha culminado el proceso de Autoevaluación del Proyecto
+					#{proyectoDetailsView.selectedProyectoEstablecimiento.nombre}.
+					A continuación iniciará el proceso de Ejecución del Proyecto,
+					resolviendo los Objetivos que no cumplieron con su requisito en
+					la Autoevaluación.
+				</p>
+
+				<p style="display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Revisión Ejecución')? 'block':'none'}">
+					Ha culminado el proceso de Ejecución del Proyecto
+					#{proyectoDetailsView.selectedProyectoEstablecimiento.nombre}.
+					A continuación iniciará el proceso de Revisión de Ejecución del 
+					Proyecto, donde deberá verificar los datos registrado en los
+					objetivos durante el proceso de Ejecución.
+				</p>
+			</div>
+			<div align="center">
+				<p:commandButton styleClass="btn btn-primary" value="Aceptar"
+					onclick="PF('dialogFinishState').hide();" />
+			</div>
+		</p:dialog>
 	</ui:define>
 </ui:composition>

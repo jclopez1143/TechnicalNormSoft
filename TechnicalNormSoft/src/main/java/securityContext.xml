@@ -21,7 +21,4 @@
 			
 			<authentication-provider ref="tnsAuthenticationProvider" />			
 	</authentication-manager>
-	    
-    
-          
 </beans:beans>

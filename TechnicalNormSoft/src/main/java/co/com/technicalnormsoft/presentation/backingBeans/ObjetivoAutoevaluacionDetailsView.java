@@ -83,12 +83,12 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 			if(establecimientoObjetivo != null) {
 				if (loadedFiles.length == 0 && txtEstado.equals("Cumple Req.")) {
 					txtNuevoEstadoObjetivo = "No Iniciado";
-					update_establecimiento_bjetivo();
+					update_establecimiento_objetivo();
 				}
 
 				if (txtObjetivoResolucion.equals("") && txtEstado.equals("No Aplica")) {
 					txtNuevoEstadoObjetivo = "No Iniciado";
-					update_establecimiento_bjetivo();
+					update_establecimiento_objetivo();
 				}
 
 			}
@@ -258,9 +258,9 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 				FacesUtils.addErrorMessage("Debe describir las razones por las cuales no aplica el requisito en el establecimiento.");
 			}
 
-			update_establecimiento_bjetivo();
+			update_establecimiento_objetivo();
 
-			FacesUtils.addInfoMessage("Datos de objetivo guardados exitosamente.");
+			FacesUtils.addInfoMessage("Objetivo guardados exitosamente con estado " + txtEstado);
 
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -293,7 +293,7 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 	}
 
 	//Method updates EstablecimientoObjetivo
-	public void update_establecimiento_bjetivo() {
+	public void update_establecimiento_objetivo() {
 		try {
 			establecimientoObjetivo.setEstadoObjetivo(
 					businessDelegatorView.findEstadoObjetivoByDescripcion(txtNuevoEstadoObjetivo));
@@ -364,7 +364,7 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 	}
 
 	//Method deletes loaded file
-	public String deleteFile(ActionEvent event) {
+	public String action_delete_file(ActionEvent event) {
 		File file = (File) event.getComponent().getAttributes().get("file");
 		try {
 			boolean deleteSuccess = businessDelegatorView.deleteObjetivoFile(file);
@@ -379,7 +379,13 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 
 			if (loadedFiles == null || loadedFiles.length == 0) {
 				btnSave.setDisabled(true);
+				if(txtEstado.equals("Cumple Req.")) {
+					txtNuevoEstadoObjetivo = "No Iniciado";
+					update_establecimiento_objetivo();
+				}
+				txtNuevoEstadoObjetivo = "Cumple Req.";
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,

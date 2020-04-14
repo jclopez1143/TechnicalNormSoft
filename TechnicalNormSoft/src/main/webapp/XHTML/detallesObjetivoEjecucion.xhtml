@@ -87,7 +87,8 @@
 										<h6 style="display: #{empty dato.campoRegistros ? 'none;' : 'block;'}">#{dato.nombre}</h6>
 										<p:dataTable value="#{dato.registroDatos}" var="registroDato"
 											paginator="true" rows="6" scrollable="true"
-											scrollHeight="200" rendered="#{!empty dato.campoRegistros}">
+											scrollHeight="200" rendered="#{!empty dato.campoRegistros}"
+											emptyMessage="No se encontraron Datos registrados.">
 
 											<p:columns value="#{dato.campoRegistros}" var="campo"
 												columnIndexVar="colIndex"
@@ -238,7 +239,8 @@
 
 				<h5 style="font-weight: bold;">Resolución:</h5>
 				<p:inputTextarea id="txtResolucion" required="true"
-					requiredMessage="Debe ingresar la resolución del objetivo"
+					value="#{objetivoEjecucionDetailsView.txtResolucion}"
+					requiredMessage="Debe ingresar una resolución del objetivo para finalizarlo."
 					autoResize="false" rows="6" style="width: 100%;" />
 				<br></br>
 				<br></br>

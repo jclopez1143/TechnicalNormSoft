@@ -37,7 +37,7 @@
 									<h6>Objetivos del Programa</h6>
 									<p:dataTable value="#{programaDetailsView.allObjetivos}"
 										var="objetivo" paginator="true" rows="8" scrollable="true"
-										scrollHeight="400">
+										scrollHeight="400" emptyMessage="No se encontraron Objetivos para éste Programa.">
 										<p:column sortBy="#{objetivo.descripcion}"
 											filterBy="#{objetivo.descripcion}">
 											<f:facet name="header">
@@ -81,7 +81,7 @@
 									<p:dataTable
 										value="#{programaDetailsView.objetivosEstadoB}"
 										var="objetivo" paginator="true" rows="5" scrollable="true"
-										scrollHeight="300">
+										scrollHeight="300" emptyMessage="No se encontraron registros.">
 										<p:column sortBy="#{objetivo.descripcion}">
 											<f:facet name="header">
 												<h:outputText value="Descripción" />
@@ -112,7 +112,7 @@
 								<div class="content-wrap">
 									<p:dataTable value="#{programaDetailsView.objetivosEstadoA}"
 										var="objetivo" paginator="true" rows="5" scrollable="true"
-										scrollHeight="300">
+										scrollHeight="300" emptyMessage="No se encontraron registros.">
 										<p:column sortBy="#{objetivo.descripcion}">
 											<f:facet name="header">
 												<h:outputText value="Descripción" />

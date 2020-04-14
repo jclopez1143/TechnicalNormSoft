@@ -20,8 +20,11 @@
 										Requisito #
 										#{objetivoAutoevaluacionDetailsView.requisito.numeral}</h3>
 									<div class="description-left">Objetivo</div>
-									<div class="description-right">Estado:
-										#{objetivoAutoevaluacionDetailsView.txtEstado}</div>
+									<div class="description-right">
+									<h:outputLabel id="txtEstado" 
+										styleClass="description-label" value="Estado:
+										#{objetivoAutoevaluacionDetailsView.txtEstado}"/>
+									</div>
 									<br></br>
 									<div class="division">
 										<hr></hr>
@@ -46,7 +49,8 @@
 										<p:selectOneButton
 											value="#{objetivoAutoevaluacionDetailsView.txtNuevoEstadoObjetivo}"
 											rendered="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion eq
-												'Autoevaluación') ? true : false}">
+												'Autoevaluación') ? true : false}"
+											unselectable="false">
 											<f:selectItems var="est" itemValue="#{est}"
 												value="#{fn:split(objetivoAutoevaluacionDetailsView.datoAutoevaluacion.magnitud, ',')}" />
 											<p:ajax update=":form" event="change" async="true"
@@ -80,12 +84,12 @@
 													<div align="center">
 														<p:commandButton id="btnDelete" title="Eliminar"
 															styleClass="datatable-button"
-															actionListener="#{objetivoAutoevaluacionDetailsView.deleteFile}"
+															actionListener="#{objetivoAutoevaluacionDetailsView.action_delete_file}"
 															onclick="if(!confirm('Está seguro que desea eliminar #{file.name}?')){return false;}"
 															icon="fa fa-fw fa-times-circle"
 															disabled="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion 
 																ne 'Autoevaluación') ? true : false}"
-															update=":form:fileDataTable" immediate="true">
+															update=":form:fileDataTable :form:txtEstado" immediate="true">
 															<f:attribute name="file" value="#{file}" />
 														</p:commandButton>
 													</div>
@@ -95,7 +99,6 @@
 												<hr></hr>
 											</div>
 											<br></br>
-
 											<div style="display: #{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion
 												eq 'Autoevaluación') ? 'block' : 'none'}">
 												<p class="description-label">Adjunte los archivos de
@@ -134,8 +137,7 @@
 											icon="fa fa-save"
 											action="#{objetivoAutoevaluacionDetailsView.action_save_establecimiento_bjetivo()}"
 											rendered="#{(objetivoAutoevaluacionDetailsView.estadoProyecto.descripcion 
-												eq 'Autoevaluación') ? true : false}"
-											update="@all" />
+												eq 'Autoevaluación') ? true : false}" update=":form" />
 									</div>
 									<br></br>
 								</div>
@@ -156,8 +158,9 @@
 			header="Cargar Archivos">
 			<h:form id="formUploadDialog">
 
-				<p:fileUpload label="Agregar" uploadLabel="Cargar"
-					cancelLabel="Cancelar"
+				<p:fileUpload style="max-width: 650px;"
+					label="Agregar" 
+					uploadLabel="Cargar" cancelLabel="Cancelar" 
 					fileUploadListener="#{objetivoAutoevaluacionDetailsView.upload}"
 					mode="advanced" dragDropSupport="false"
 					update=":form :dialogUpload" sizeLimit="10000000"

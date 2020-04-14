@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -60,6 +61,7 @@ public class ObjetivoEjecucionDetailsView implements Serializable {
 	private HashMap<String, ValorDatoDTO> valorDatos;
 	private boolean showDialog;
 	private String txtEstado;
+	private String txtResolucion;
 	@ManagedProperty(value = "#{BusinessDelegatorView}")
 	private IBusinessDelegatorView businessDelegatorView;
 	private HttpSession httpSession;
@@ -108,6 +110,7 @@ public class ObjetivoEjecucionDetailsView implements Serializable {
 	//Method for initialize Objetivo Detailed Form to view specific attributes 
 	public String action_set_details() {
 		try {
+			txtResolucion = "";
 			selectedObjetivo = (ObjetivoDTO) httpSession.getAttribute("selectedObjetivo");
 			selectedProyectoEstablecimiento = (ProyectoEstablecimientoDTO) httpSession.getAttribute("selectedProyectoEstablecimiento");
 
@@ -129,6 +132,7 @@ public class ObjetivoEjecucionDetailsView implements Serializable {
 
 						numeralProyecto = businessDelegatorView.findProyectoByProyectoEstablecimientoId(
 								selectedProyectoEstablecimiento.getIdProyectoEstablecimiento()).getNumeral();
+						
 
 			}
 
@@ -208,7 +212,6 @@ public class ObjetivoEjecucionDetailsView implements Serializable {
 							} else {
 								valorDatos.put(dato.getNombre(), null);
 							}
-
 						}
 						dato.setValorDatos(valorDatos);
 			}
@@ -422,6 +425,21 @@ public class ObjetivoEjecucionDetailsView implements Serializable {
 	//finish Objetivo
 	public String action_finish_objetivo() {
 		if (datosObjetivo != null) {
+			
+			if (txtResolucion.equals("")) {
+				FacesUtils.addErrorMessage("Debe ingresar una resolución del objetivo para finalizarlo.");
+				return "";
+				
+				
+				
+				
+			}
+			
+			for (DatoObjetivoDTO datoObjetivo : datosObjetivo) {
+				if(datoObjetivo.getCampoRegistros().isEmpty()) {
+					
+				}
+			}
 
 			Dialog dialog = (Dialog) FacesContext.getCurrentInstance().getViewRoot().findComponent(
 					"dialogResolucion");
@@ -571,5 +589,13 @@ public class ObjetivoEjecucionDetailsView implements Serializable {
 
 	public void setTxtEstado(String txtEstado) {
 		this.txtEstado = txtEstado;
+	}
+
+	public String getTxtResolucion() {
+		return txtResolucion;
+	}
+
+	public void setTxtResolucion(String txtResolucion) {
+		this.txtResolucion = txtResolucion;
 	}
 }

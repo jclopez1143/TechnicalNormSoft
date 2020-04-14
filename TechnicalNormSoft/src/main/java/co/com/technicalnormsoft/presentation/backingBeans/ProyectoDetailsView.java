@@ -12,6 +12,7 @@ import co.com.technicalnormsoft.model.dto.RequisitoDTO;
 import co.com.technicalnormsoft.presentation.businessDelegate.*;
 import co.com.technicalnormsoft.utilities.FacesUtils;
 
+import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.outputlabel.OutputLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -194,11 +195,16 @@ public class ProyectoDetailsView implements Serializable {
 			
 				businessDelegatorView.finishProyectoEstado(proyectoEstablecimiento.getIdProyectoEstablecimiento());
 				FacesUtils.addInfoMessage(estadoProyecto.getDescripcion() + " ha finalizado exitosamente.");
+				
+				Dialog finishDialog = (Dialog) FacesContext.getCurrentInstance().getViewRoot().findComponent(
+						"dialogFinishState");
+				finishDialog.setVisible(true);
 			} else {
 				FacesUtils.addErrorMessage("Debe completar todos los objetivos del Proyecto para finalizar "
 						+ estadoProyecto.getDescripcion());
 			}
 		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
 			e.printStackTrace();
 		}
 		return "";
