@@ -277,7 +277,7 @@ public class EstablecimientoDetailsView implements Serializable {
 		btnSave.setRendered(true);
 		btnClear.setRendered(true);
 
-		FacesUtils.addInfoMessage("El nombre del establecimiento y el tipo de servicio no podrá ser actualizado. En caso de cambiar, registre un nuevo Establecimiento.");
+		FacesUtils.addInfoMessage("El nombre del establecimiento y el tipo de servicio no podrán ser actualizado. En caso de cambiar, registre un nuevo Establecimiento.");
 		return "";
 	}
 

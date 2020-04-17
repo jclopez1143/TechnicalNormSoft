@@ -10,10 +10,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.io.IOException;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
@@ -71,13 +74,22 @@ public class LoginView {
 
             FacesUtils.getHttpSession(true)
                       .setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-        } catch (AuthenticationException e) {
+            
+            httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            httpSession.setAttribute("usuarioEmail", userId);
+        } catch (Exception e) {
             FacesUtils.addErrorMessage("login o password incorrecto");
 
             return "/login.xhtml";
         }
-        httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        httpSession.setAttribute("usuarioEmail", userId);
-        return "/XHTML/listadoEstablecimiento.xhtml";
+        try {
+        	FacesContext context = FacesContext.getCurrentInstance();
+    		HttpServletRequest origRequest = (HttpServletRequest) context.getExternalContext().getRequest();
+    		String contextPath = origRequest.getContextPath();
+    		context.getExternalContext().redirect(contextPath + "/XHTML/listadoEstablecimiento.xhtml");
+		} catch (IOException e) {
+			FacesUtils.addErrorMessage("Algo malo acurrió :(");
+		}
+        return "";
     }
 }

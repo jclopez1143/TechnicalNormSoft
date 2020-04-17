@@ -260,7 +260,7 @@ public class ObjetivoAutoevaluacionDetailsView implements Serializable {
 
 			update_establecimiento_objetivo();
 
-			FacesUtils.addInfoMessage("Objetivo guardados exitosamente con estado " + txtEstado);
+			FacesUtils.addInfoMessage("Objetivo guardado exitosamente con estado " + txtEstado);
 
 		}catch (Exception e) {
 			e.printStackTrace();

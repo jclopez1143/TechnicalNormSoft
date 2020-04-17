@@ -36,32 +36,36 @@
 	<ui:insert name="content">
 
 	</ui:insert>
-	<p:ajaxStatus
-		style="width:32px;height:32px;position:fixed;right:10px;bottom:15px;">
-		<f:facet name="start">
-			<span style="color: Dodgerblue;">
-				<i class="fa fa-circle-o-notch fa-spin ajax-loader fa-2x"
-				aria-hidden="true"></i>
-			</span>
-		</f:facet>
-
-		<f:facet name="complete">
-			<h:outputText value="" />
-		</f:facet>
-	</p:ajaxStatus>
 	
 	<br></br>
 	<ui:include src="footer.xhtml" />
-
-
-	<p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
-		draggable="false" closable="false">
-		<p:graphicImage
-			value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />
+	<p:ajaxStatus  onstart = "startHandler();" oncomplete = "endHandler();" />
+	<script>
+        var ajaxInProgress;
+        function startHandler() {
+            ajaxInProgress = setTimeout(function () {
+                PF('statusDialog').show();
+            }, 900);
+        }
+        function endHandler() {
+            clearTimeout(ajaxInProgress);
+            PF('statusDialog').hide();
+            ajaxInProgress = null;
+        }
+    </script>
+	<p:dialog modal="true" widgetVar="statusDialog"
+		draggable="false" closable="false" resizable="false"
+		showHeader="false">
+		<span style="color: Dodgerblue;">
+				<i class="fa fa-circle-o-notch fa-spin ajax-loader fa-2x"
+				aria-hidden="true"></i>
+			</span>
 	</p:dialog>
+	
 	<!-- Expired session -->
-	<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();"
-		timeout="#{session.maxInactiveInterval * 1000}" />
+	<p:idleMonitor timeout="62000">
+		<p:ajax event="idle" onstart="PF('sessionTimeOutDialog').show();"/>
+	</p:idleMonitor>
 	<p:dialog modal="true" widgetVar="sessionTimeOutDialog"
 		draggable="false" closable="false" showHeader="false"
 		resizable="false">
@@ -72,7 +76,8 @@
 				<p:outputLabel styleClass="description-label"
 					value="Por favor, ingrese nuevamente." />
 				<div style="height: 40px;"></div>
-				<p:commandButton id="confirmBackToLogin" styleClass="btn btn-info" value="Iniciar Sesión"
+				<p:commandButton id="confirmBackToLogin" styleClass="btn btn-info" 
+					action="logout?faces-redirect=true" value="Iniciar Sesión"
 					onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';"/>
 			</div>
 		</div>

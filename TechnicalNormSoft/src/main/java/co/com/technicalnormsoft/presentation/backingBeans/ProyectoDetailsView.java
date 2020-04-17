@@ -196,6 +196,8 @@ public class ProyectoDetailsView implements Serializable {
 				businessDelegatorView.finishProyectoEstado(proyectoEstablecimiento.getIdProyectoEstablecimiento());
 				FacesUtils.addInfoMessage(estadoProyecto.getDescripcion() + " ha finalizado exitosamente.");
 				
+				action_set_details();
+				
 				Dialog finishDialog = (Dialog) FacesContext.getCurrentInstance().getViewRoot().findComponent(
 						"dialogFinishState");
 				finishDialog.setVisible(true);

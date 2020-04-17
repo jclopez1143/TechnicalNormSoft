@@ -193,18 +193,18 @@
 					<p
 						style="display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Autoevaluación')? 'block':'none'}">
 						Una vez completados todos los programas (con un progreso del
-						100%), podrá finalizar el proceso de Autoevaluación e iniciar el
-						proceso de Ejecución. Recuerde que una vez el Proyecto entre en
-						Ejecución, los objetivo que Cumplieron o No Aplicaron su
+						<b>100%</b>), podrá finalizar el proceso de <b>Autoevaluación</b> e iniciar el
+						proceso de <b>Ejecución</b>. Recuerde que una vez el Proyecto entre en
+						<b>Ejecución</b>, los objetivos que <u>Cumplieron</u> o <u>No Aplicaron</u> su
 						Requisito, no podrán ser modificados. Por favor, asegurese primero
-						de tener correctamente registrados los objetivos de la
+						de tener correctamente registrados los datos en los objetivos de la
 						Autoevaluación.</p>
 
 					<p style="display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Ejecución')? 'block':'none'}">
 						Una vez completados todos los programas (con un progreso del
-						100%), podrá finalizar el proceso de Ejecución e iniciar el
-						proceso de Revisión Ejecución. Durante la Revisión de Ejecución
-						deberá asegurar la correctitud de los datos de cada objetivo antes
+						<b>100%</b>), podrá finalizar el proceso de <b>Ejecución</b> e iniciar el
+						proceso de <b>Revisión Ejecución</b>. Durante la Revisión de Ejecución
+						deberá asegurar <u>la correctitud de los datos de cada objetivo</u> antes
 						de finalizar el Proyecto, permitiendo modificar y corregir
 						cualquier error en los Objetivos.
 					</p>
@@ -214,7 +214,8 @@
 					<br></br>
 					<p:commandButton styleClass="btn btn-primary" value="Aceptar"
 						action="#{proyectoDetailsView.action_finish_proyecto_state}"
-						update="@all" />
+						onclick="PF('dialogConfirmFinishState').hide();"
+						update=":form :dialogFinishState :dialogConfirmFinishState" />
 					<p:commandButton styleClass="btn btn-danger" value="Cancelar"
 						onclick="PF('dialogConfirmFinishState').hide();" />
 				</div>
@@ -228,17 +229,17 @@
 			<div style="text-align: justify">
 				<p
 					style="display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Ejecución')? 'block':'none'}">
-					Ha culminado el proceso de Autoevaluación del Proyecto
-					#{proyectoDetailsView.selectedProyectoEstablecimiento.nombre}.
-					A continuación iniciará el proceso de Ejecución del Proyecto,
-					resolviendo los Objetivos que no cumplieron con su requisito en
-					la Autoevaluación.
+					Ha culminado el proceso de <b>Autoevaluación</b> del Proyecto
+					<b>#{proyectoDetailsView.selectedProyectoEstablecimiento.nombre}</b>.
+					A continuación iniciará el proceso de <b>Ejecución</b> del Proyecto,
+					resolviendo los Objetivos que no cumplieron con su requisito
+					durante el proceso de Autoevaluación.
 				</p>
 
 				<p style="display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Revisión Ejecución')? 'block':'none'}">
-					Ha culminado el proceso de Ejecución del Proyecto
-					#{proyectoDetailsView.selectedProyectoEstablecimiento.nombre}.
-					A continuación iniciará el proceso de Revisión de Ejecución del 
+					Ha culminado el proceso de <b>Ejecución</b> del Proyecto
+					<b>#{proyectoDetailsView.selectedProyectoEstablecimiento.nombre}</b>.
+					A continuación iniciará el proceso de <b>Revisión de Ejecución</b> del 
 					Proyecto, donde deberá verificar los datos registrado en los
 					objetivos durante el proceso de Ejecución.
 				</p>

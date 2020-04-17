@@ -20,11 +20,9 @@
 										Requisito #
 										#{objetivoAutoevaluacionDetailsView.requisito.numeral}</h3>
 									<div class="description-left">Objetivo</div>
-									<div class="description-right">
-									<h:outputLabel id="txtEstado" 
-										styleClass="description-label" value="Estado:
-										#{objetivoAutoevaluacionDetailsView.txtEstado}"/>
-									</div>
+									<h:outputLabel id="txtEstado" styleClass="description-right"
+											value="Estado:
+												#{objetivoAutoevaluacionDetailsView.txtEstado}" />
 									<br></br>
 									<div class="division">
 										<hr></hr>
@@ -159,7 +157,7 @@
 			<h:form id="formUploadDialog">
 
 				<p:fileUpload style="max-width: 650px;"
-					label="Agregar" 
+					label="Agregar" previewWidth="45"
 					uploadLabel="Cargar" cancelLabel="Cancelar" 
 					fileUploadListener="#{objetivoAutoevaluacionDetailsView.upload}"
 					mode="advanced" dragDropSupport="false"

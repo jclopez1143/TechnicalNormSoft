@@ -6,10 +6,10 @@
 	
 	<ui:define name="content">
 		<h:form id="form">
-			<p:messages id="messages" closable="true" />
 			<div class="page-content container">
 				<div class="row">
 					<div class="col-md-offset-2 col-lg-8">
+						<p:messages id="messages" closable="true" />
 						<div class="card-wrapper">
 							<div class="card" id="establecimientoData">
 								<div class="content-wrap">
@@ -132,19 +132,12 @@
 													value="#{proyectoEstablecimiento}" />
 											</p:commandLink>
 										</p:column>
-
+8
 										<p:column sortBy="#{proyectoEstablecimiento.dateIn}">
 											<f:facet name="header">
 												<h:outputText value="Fecha de Inicio" />
 											</f:facet>
 											<h:outputText value="#{proyectoEstablecimiento.dateIn}" />
-										</p:column>
-
-										<p:column sortBy="#{proyectoEstablecimiento.score}">
-											<f:facet name="header">
-												<h:outputText value="Score" />
-											</f:facet>
-											<h:outputText value="#{proyectoEstablecimiento.score}" />
 										</p:column>
 									</p:dataTable>
 									<br></br>
