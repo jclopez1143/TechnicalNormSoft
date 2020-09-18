@@ -27,10 +27,10 @@
 </h:head>
 <h:body>
 	<h:form id="form">
-		<p:messages id="messages" closable="true" />
 		<div class="page-content container">
 			<div class="row">
 				<div class="col-md-offset-3 col-lg-6">
+					<p:messages id="messages" closable="true" />
 					<p:panel id="userData">
 						<h4 style="font-weight: bold;">Crea Tu Cuenta</h4>
 						<p:separator />
@@ -80,13 +80,13 @@
 							<p:password id="txtPassword" feedback="true" required="true"
 								requiredMessage="Debe ingresar una contraseña"
 								binding="#{crearUsuarioView.txtPassword}"
-								match="txtConfirmPassword"
+								match="txtConfirmPassword" validatorMessage=""
 								promptLabel="Por favor ingrese contraseña" weakLabel="Débil"
 								goodLabel="Buena" strongLabel="Fuerte" />
 
 							<p:outputLabel value="Confirmar Contraseña: * " />
 							<p:password id="txtConfirmPassword" feedback="true"
-								required="true"
+								required="true" 
 								requiredMessage="Debe ingresar la confirmación de contraseña"
 								promptLabel="Por favor ingrese contraseña" weakLabel="Débil"
 								goodLabel="Buena" strongLabel="Fuerte" />

@@ -108,8 +108,6 @@ public class UsuarioLogic implements IUsuarioLogic {
 				throw new ZMessManager().new NullEntityExcepcion("Usuario");
 			}
 
-			//            validateUsuario(entity);
-			
 			if (findUsuarioByEmail(entity.getEmail()) != null) {
 				throw new ZMessManager("Ya existe un usuario con el mismo e-Mail");
 			}
@@ -117,9 +115,6 @@ public class UsuarioLogic implements IUsuarioLogic {
 			entity.setDateIn(new Date());
 			usuarioDAO.save(entity);
 			
-			//creating validation for access of user for first time TODO
-//			Preferences usuarioPrefs = Preferences.userNodeForPackage(Usuario.class);
-//			usuarioPrefs.putBoolean(entity.getIdUsuario()+"", true);
 			log.debug("save Usuario successful");
 		} catch (Exception e) {
 			log.error("save Usuario failed", e);
@@ -226,8 +221,7 @@ public class UsuarioLogic implements IUsuarioLogic {
 		try {
 			entity = usuarioDAO.findUsuarioByEmail(email);
 		} catch (Exception e) {
-			log.error("get Usuario failed", e);
-			throw new ZMessManager().new FindingException("Usuario");
+			entity = null;
 		} finally {
 		}
 

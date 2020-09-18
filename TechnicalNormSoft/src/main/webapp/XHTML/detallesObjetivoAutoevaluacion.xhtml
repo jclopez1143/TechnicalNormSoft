@@ -8,7 +8,7 @@
 
 	<ui:define name="content">
 		<h:form id="form">
-			<p:growl id="messages" closable="true" />
+			<p:growl id="messages" closable="true" life="120000"/>
 			<div class="page-content container">
 				<div class="row">
 					<div class="col-md-offset-2 col-lg-8">
@@ -64,14 +64,14 @@
 												emptyMessage="No se encontraron archivos cargados."
 												value="#{objetivoAutoevaluacionDetailsView.loadedFiles}"
 												var="file" paginator="false">
-												<p:column width="80%;">
+												<p:column width="80%">
 													<f:facet name="header">
 														<h:outputText value="Archivo" />
 													</f:facet>
 													<p:commandLink value="#{file.name}" ajax="false"
 														actionListener="#{objetivoAutoevaluacionDetailsView.action_set_dwonload}">
 														<p:fileDownload
-															value="#{objetivoAutoevaluacionDetailsView.download}" />
+															value="#{objetivoAutoevaluacionDetailsView.download}"/>
 														<f:attribute name="file" value="#{file}" />
 													</p:commandLink>
 												</p:column>
@@ -152,12 +152,13 @@
 
 		<p:dialog id="dialogUpload" appendTo="@(body)" draggable="true"
 			closable="true" showEffect="blind" hideEffect="blind"
-			widgetVar="dialogUpload" resizable="false" modal="true" width="650"
+			widgetVar="dialogUpload" resizable="false" modal="true"
 			header="Cargar Archivos">
-			<h:form id="formUploadDialog">
+			<h:form id="formUploadDialog" >
 
-				<p:fileUpload style="max-width: 650px;"
-					label="Agregar" previewWidth="45"
+				<p:fileUpload
+					style="max-width: 640px;" 
+					label="Agregar" previewWidth="45"  
 					uploadLabel="Cargar" cancelLabel="Cancelar" 
 					fileUploadListener="#{objetivoAutoevaluacionDetailsView.upload}"
 					mode="advanced" dragDropSupport="false"

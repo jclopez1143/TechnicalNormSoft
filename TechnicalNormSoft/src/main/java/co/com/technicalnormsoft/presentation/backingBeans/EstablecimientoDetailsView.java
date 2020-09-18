@@ -322,6 +322,9 @@ public class EstablecimientoDetailsView implements Serializable {
 
 	public String action_create_proyecto() {
 		try {
+			if (selectedNorma == null) {
+				FacesUtils.addErrorMessage("Debe seleccionar una Norma Técnica.");
+			}
 			if (!businessDelegatorView.isOtherSameProyectoInExecution(entity.getIdEstablecimiento(),
 					selectedNorma.getIdNorma())) {
 				nuevoProyectoEstablecimiento = new ProyectoEstablecimiento();
@@ -353,6 +356,19 @@ public class EstablecimientoDetailsView implements Serializable {
 			e.printStackTrace();
 		}
 		return "";
+	}
+	
+	public void action_show_norma_details(ActionEvent evt) {
+		try {
+			selectedNorma = (Norma) (evt.getComponent()
+					.getAttributes().get("selectedNorma"));
+			httpSession.setAttribute("selectedNorma", businessDelegatorView.normaToNormaDTO(selectedNorma));
+			FacesContext context = FacesContext.getCurrentInstance();
+			HttpServletRequest origRequest = (HttpServletRequest) context.getExternalContext().getRequest();
+			String contextPath = origRequest.getContextPath();
+			context.getExternalContext().redirect(contextPath + "/XHTML/detallesNorma.xhtml");
+		} catch (Exception e) {
+		}
 	}
 
 	public OutputLabel getMsgCargoPersonaContacto() {

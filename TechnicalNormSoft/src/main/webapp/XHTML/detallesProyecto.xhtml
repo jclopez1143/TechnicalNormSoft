@@ -112,7 +112,7 @@
 								<div class="content-wrap">
 									<p:dataTable value="#{proyectoDetailsView.objetivosEnCurso}"
 										var="objetivo" paginator="true" rows="5" scrollable="true"
-										emptyMessage="No se encontraron Objetivos en Curso.">
+										scrollHeight="225" emptyMessage="No se encontraron Objetivos en Curso.">
 										<p:column sortBy="#{objetivo.descripcion}">
 											<f:facet name="header">
 												<h:outputText value="Descripción" />
@@ -185,9 +185,10 @@
 
 		<p:dialog id="dialogConfirmFinishState" appendTo="@(body)"
 			draggable="true" closable="false" showEffect="blind"
-			hideEffect="blind" resizable="false" modal="true" width="500"
+			hideEffect="blind" resizable="false" modal="true"
 			header="Finalizar #{proyectoDetailsView.estadoProyecto.descripcion}"
-			widgetVar="dialogConfirmFinishState" responsive="true">
+			widgetVar="dialogConfirmFinishState" responsive="true"
+			style="max-width: 500px;">
 			<h:form id="ConfirmDialogform">
 				<div style="text-align: justify">
 					<p
@@ -224,8 +225,9 @@
 
 		<p:dialog id="dialogFinishState" appendTo="@(body)" draggable="true"
 			closable="false" showEffect="blind" hideEffect="blind"
-			resizable="false" modal="true" width="500" header="¡Felicidades!"
-			widgetVar="dialogFinishState" responsive="true">
+			resizable="false" modal="true" header="¡Felicidades!"
+			widgetVar="dialogFinishState" responsive="true"
+			style="max-width: 500px;">
 			<div style="text-align: justify">
 				<p
 					style="display: #{(proyectoDetailsView.estadoProyecto.descripcion eq 'Ejecución')? 'block':'none'}">

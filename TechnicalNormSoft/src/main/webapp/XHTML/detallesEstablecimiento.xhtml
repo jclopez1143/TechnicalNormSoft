@@ -126,7 +126,7 @@
 											<f:facet name="header">
 												<h:outputText value="Nombre" />
 											</f:facet>
-											<p:commandLink value="#{proyectoEstablecimiento.nombre}"
+											<p:commandLink value="#{proyectoEstablecimiento.nombre}" 
 												actionListener="#{establecimientoDetailsView.action_show_proyecto_details}">
 												<f:attribute name="selectedProyectoEstablecimiento"
 													value="#{proyectoEstablecimiento}" />
@@ -169,13 +169,23 @@
 					var="norma" rows="5" selectionMode="single"
 					selection="#{establecimientoDetailsView.selectedNorma}"
 					rowKey="#{norma.idNorma}" emptyMessage=
-					"No se encontraron Normas Técnicas para el Establecimiento."
+						"No se encontraron Normas Técnicas para el Establecimiento."
 					rowHover="true">
 					<f:facet name="header">
 					Normas Técnicas
 					</f:facet>
-					<p:column style="text-align:center">
-						<h:outputText value="#{norma.nombre}" />
+					<p:column width="80%" style="text-align:justify">
+						<h:outputText value="#{norma.nombre}" />						
+					</p:column>
+					<p:column>
+						<div align="center">
+							<p:commandButton id="btnNormaDetails"
+								icon="fa fa-fw fa-external-link" title="Ver Norma Técnica"
+								update="@all" immediate="true" styleClass="datatable-button"
+								actionListener="#{establecimientoDetailsView.action_show_norma_details}">
+								<f:attribute name="selectedNorma" value="#{norma}" />
+							</p:commandButton>
+						</div>
 					</p:column>
 				</p:dataTable>
 				<br></br>

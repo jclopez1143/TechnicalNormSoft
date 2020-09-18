@@ -23,7 +23,8 @@
 									</div>
 
 									<p:dataTable value="#{establecimientoView.data}"
-										var="establecimiento" paginator="true" rows="5">
+										var="establecimiento" paginator="true" rows="5"
+										scrollable="true" >
 										<p:column filterBy="#{establecimiento.nombre}"
 											sortBy="#{establecimiento.nombre}">
 											<f:facet name="header">

@@ -166,7 +166,7 @@ public class CrearUsuarioView implements Serializable {
             entity.setRazonSocial(FacesUtils.checkString(txtRazonSocial));
             entity.setSitioWeb(FacesUtils.checkString(txtSitioWeb));
             entity.setTelefono(FacesUtils.checkString(txtTelefono));
-            entity.setTelefono(FacesUtils.checkString(txtPassword));
+            entity.setPassword(FacesUtils.checkString(txtPassword));
             businessDelegatorView.saveUsuario(entity);
             
             httpSession.setAttribute("usuario", entity);

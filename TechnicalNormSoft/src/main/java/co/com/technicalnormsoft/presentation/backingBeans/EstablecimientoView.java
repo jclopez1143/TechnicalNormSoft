@@ -231,7 +231,7 @@ public class EstablecimientoView implements Serializable {
 			entity.setTipoServicio(tipoServicioSelected);
 			entity.setUsuario(usuario);
 			businessDelegatorView.saveEstablecimiento(entity);
-			FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+			FacesUtils.addInfoMessage("Establecimiento creado exitosamente.");
 			action_clear();
 		} catch (Exception e) {
 			entity = null;

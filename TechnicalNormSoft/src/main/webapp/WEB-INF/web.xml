@@ -40,6 +40,7 @@
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
@@ -59,6 +60,18 @@
 		<servlet-name>mvc-dispatcher</servlet-name>
 		<url-pattern>/rest/controllers/*</url-pattern>
 	</servlet-mapping>
+	<mime-mapping>
+		<extension>xhtml</extension>
+		<mime-type>application/xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xml</extension>
+		<mime-type>application/xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>jspx</extension>
+		<mime-type>application/xml</mime-type>
+	</mime-mapping>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>bootstrap</param-value>
@@ -87,7 +100,17 @@
 		<error-code>404</error-code>
 		<location>/404.xhtml</location>
 	</error-page>
+	<!-- Session Timeout Config. by Mins -->
 	<session-config>
 		<session-timeout>1</session-timeout>
 	</session-config>
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>client</param-value>
+	</context-param>
+	<!-- FacesServlet suffix interpretation config -->
+<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xml</param-value>
+	</context-param>
 </web-app>
